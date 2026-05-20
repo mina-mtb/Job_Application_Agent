@@ -171,3 +171,15 @@
 2026-05-20 20:49:40,973 [INFO] job_matcher —   Rejected  : 0
 2026-05-20 20:49:40,973 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
 2026-05-20 20:49:40,973 [INFO] job_matcher — ============================================================
+2026-05-20 21:12:29,800 [INFO] job_matcher — ============================================================
+2026-05-20 21:12:29,800 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 21:12:29,806 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 21:12:29,806 [INFO] job_matcher — Loaded 13 jobs from data\cleaned\cleaned_jobs_2026-05-20.json
+2026-05-20 21:12:29,817 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 21:12:29,817 [INFO] job_matcher — SUMMARY: 13 jobs processed
+2026-05-20 21:12:29,817 [INFO] job_matcher —   Excellent : 9
+2026-05-20 21:12:29,817 [INFO] job_matcher —   High      : 4
+2026-05-20 21:12:29,817 [INFO] job_matcher —   Medium    : 0
+2026-05-20 21:12:29,817 [INFO] job_matcher —   Rejected  : 0
+2026-05-20 21:12:29,817 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 21:12:29,817 [INFO] job_matcher — ============================================================
