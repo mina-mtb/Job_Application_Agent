@@ -28,6 +28,7 @@ from agents.job_matcher     import run as run_matcher
 from agents.cv_tailor       import run as run_cv_tailor
 from agents.tracker_updater import update_tracker
 from agents.report_generator import generate_report
+from integrations.obsidian_sync import run as run_obsidian_sync
 import tempfile
 import os
 
@@ -142,6 +143,7 @@ def main():
         print("STEP 2/5 — Job Cleaner")
         print("━" * 60)
         cl = run_cleaner(config_path_to_use)
+        clean_stats_full = cl
         stats["after_cleaning"] = cl.get('cleaned', 0)
         print(f"  ✓ Clean: {cl['cleaned']}  Rejected: {cl['rejected']}  "
               f"Input: {cl['total_input']}\n")
@@ -214,6 +216,27 @@ def main():
     out_dir = Path("outputs/daily_reports")
     report_file = generate_report(stats, ready_jobs, str(out_dir))
     print(f"  ✓ Report generated: {report_file}\n")
+    
+    # ── STEP 7: Obsidian Sync ─────────────────────────────────────────────────
+    print("━" * 60)
+    print("STEP 7/7 — Syncing to Obsidian")
+    print("━" * 60)
+    
+    all_scored_jobs = []
+    rejected_count = 0
+    if results:
+        all_scored_jobs = (results.get("excellent", []) + 
+                           results.get("high", []) + 
+                           results.get("medium", []))
+        rejected_count = len(results.get("rejected", []))
+        
+    sync_stats = run_obsidian_sync(
+        config_path=config_path_to_use,
+        scored_jobs=all_scored_jobs,
+        rejected_count=rejected_count,
+        clean_stats=locals().get("clean_stats_full")
+    )
+    print(f"  ✓ Obsidian vault updated: {sync_stats['job_notes']} notes, summary, tracker\n")
     
     # Cleanup temp config
     if os.path.exists(config_path_to_use) and config_path_to_use != args.config:

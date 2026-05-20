@@ -81,7 +81,7 @@ search:
   include_hybrid: true
 
 # --- OBSIDIAN VAULT ---
-obsidian_vault: "../MinaJobAgentVault"
+obsidian_vault: "C:/Users/mina_/OneDrive/Documents/Job_Application_Agent/MinaJobAgentVault"
 
 # --- PIPELINE PHASES (enable/disable modules) ---
 phases:
