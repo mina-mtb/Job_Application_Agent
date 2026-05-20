@@ -54,8 +54,6 @@ def call_claude(prompt: str, system: str, max_tokens: int = 1500) -> str:
         
     try:
         import anthropic
-        import os
-        import yaml
         api_key = os.environ.get("ANTHROPIC_API_KEY")
         if not api_key:
             with open("config/config.yaml", "r", encoding="utf-8") as f:
