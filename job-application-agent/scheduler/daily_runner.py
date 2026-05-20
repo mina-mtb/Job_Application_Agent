@@ -294,6 +294,19 @@ def run_pipeline(config_path: str = "config/config.yaml",
         logger.error(f"  Obsidian Sync failed: {e}")
         summary["errors"].append(f"obsidian: {e}")
 
+    # ── Step 7: Daily Apply Page ────────────────────────────────────────────────
+    logger.info("\n── STEP 7/8: Daily Apply Page ──")
+    try:
+        from agents.daily_apply_page import generate_daily_page
+        generate_daily_page(
+            tracker_path=config["paths"]["tracker"],
+            vault_path=config.get("obsidian_vault", "../MinaJobAgentVault"),
+        )
+        logger.info("  ✓ Daily apply page created in Obsidian")
+    except Exception as e:
+        logger.error(f"  Daily apply page failed: {e}")
+        summary["errors"].append(f"daily_apply_page: {e}")
+
     # ── Step 7: Google Drive ───────────────────────────────────────────────────
     logger.info("\n── STEP 7/7: Google Drive ──")
     try:

@@ -27,7 +27,7 @@ logger = logging.getLogger("tracker_updater")
 TRACKER_FIELDS = [
     "job_id", "title", "company", "location",
     "score", "priority", "status",
-    "cv_generated", "date_added", "date_applied", "notes"
+    "cv_generated", "date_added", "date_applied", "notes", "job_url"
 ]
 
 # Statuses set manually by Mina — never auto-overwrite these
@@ -97,6 +97,7 @@ def update_tracker(scored_jobs: list[dict], tracker_path: str) -> dict:
                 "date_added": today,
                 "date_applied": "",
                 "notes": "",
+                "job_url": job.get("url", ""),
             }
             existing[job_id] = new_row
             stats["added"] += 1

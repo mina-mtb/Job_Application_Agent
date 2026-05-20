@@ -238,6 +238,20 @@ def main():
     )
     print(f"  ✓ Obsidian vault updated: {sync_stats['job_notes']} notes, summary, tracker\n")
     
+    # ── STEP 8: Daily Apply Page ──────────────────────────────────────────────
+    print("━" * 60)
+    print("STEP 8/8 — Generate Daily Apply Page")
+    print("━" * 60)
+    try:
+        from agents.daily_apply_page import generate_daily_page
+        generate_daily_page(
+            tracker_path=config["paths"]["tracker"],
+            vault_path=config.get("obsidian_vault", "../MinaJobAgentVault")
+        )
+        print("  ✓ Daily apply page created in Obsidian\n")
+    except Exception as e:
+        print(f"  ✗ Daily apply page failed: {e}\n")
+    
     # Cleanup temp config
     if os.path.exists(config_path_to_use) and config_path_to_use != args.config:
         try:
