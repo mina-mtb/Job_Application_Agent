@@ -54,7 +54,14 @@ def call_claude(prompt: str, system: str, max_tokens: int = 1500) -> str:
         
     try:
         import anthropic
-        client = anthropic.Anthropic()  # uses ANTHROPIC_API_KEY env var
+        import os
+        import yaml
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+        if not api_key:
+            with open("config/config.yaml", "r", encoding="utf-8") as f:
+                cfg = yaml.safe_load(f)
+                api_key = cfg.get("anthropic_api_key")
+        client = anthropic.Anthropic(api_key=api_key)
         message = client.messages.create(
             model="claude-sonnet-4-20250514",
             max_tokens=max_tokens,

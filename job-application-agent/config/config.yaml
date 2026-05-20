@@ -2,6 +2,8 @@
 # JOB APPLICATION AGENT — PIPELINE CONFIGURATION
 # =============================================================
 
+anthropic_api_key: "YOUR_KEY_HERE"
+
 pipeline:
   name: Mina Job Application Agent
   version: "1.0.0-phase1"
