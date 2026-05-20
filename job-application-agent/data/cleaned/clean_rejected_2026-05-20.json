@@ -1,5 +1,54 @@
 [
   {
+    "title": "Barista",
+    "company": "Espresso House",
+    "location": "Gothenburg, Sweden",
+    "type": "Part-time",
+    "description": "Make coffee and serve customers. Customer service required.",
+    "requirements": [
+      "Customer service",
+      "Swedish"
+    ],
+    "nice_to_have": [],
+    "experience_years": "0-1",
+    "language_requirement": "Swedish",
+    "source": "apify_indeed",
+    "url": "https://espressohouse.se/mock/999",
+    "posted_date": "2026-05-14",
+    "compensation": "paid",
+    "id": "barista_espresso_house_005",
+    "clean_rejection_reason": "No software/tech relevance signals found"
+  },
+  {
+    "id": "job_001",
+    "title": "Junior .NET Developer",
+    "company": "Volvo Cars",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "We are looking for a Junior .NET Developer to join our connected vehicles software team. You will build and maintain backend services using C# and ASP.NET Core, work with microservices architecture, and contribute to CI/CD pipelines using Azure DevOps. Experience with SQL Server and REST APIs is required.",
+    "requirements": [
+      "C#",
+      ".NET / ASP.NET Core",
+      "SQL Server",
+      "REST APIs",
+      "Microservices",
+      "Azure DevOps",
+      "Git"
+    ],
+    "nice_to_have": [
+      "Docker",
+      "RabbitMQ",
+      "Agile/Scrum"
+    ],
+    "experience_years": "1-3",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://careers.volvocars.com/mock/001",
+    "posted_date": "2025-05-18",
+    "compensation": "paid",
+    "clean_rejection_reason": "Near-duplicate of junior__net_develope_volvo_cars_003"
+  },
+  {
     "id": "job_006",
     "title": "Retail Sales Associate",
     "company": "H&M",

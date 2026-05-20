@@ -58,7 +58,7 @@ mock_jobs_file: data/raw/mock_jobs.json
 
 # --- APIFY (Phase 2 — set token when ready for live data) ---
 apify:
-  token: "YOUR_APIFY_TOKEN_HERE"
+  token: "apify_api_IJsb6jxI8AjA9dCS9PoyGOMBS75UzQ1F07ar"
   actor_id: "bebity/linkedin-jobs-scraper"
   search_terms:
     - "Backend Developer Gothenburg"

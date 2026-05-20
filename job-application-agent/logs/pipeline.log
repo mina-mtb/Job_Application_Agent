@@ -108,3 +108,18 @@
 2026-05-20 12:41:16,109 [INFO] job_matcher â€”   Rejected  : 3
 2026-05-20 12:41:16,109 [INFO] job_matcher â€”   Saved to  : data/scored/scored_jobs_2026-05-20.json
 2026-05-20 12:41:16,109 [INFO] job_matcher â€” ============================================================
+2026-05-20 17:09:30,608 [INFO] job_matcher — ============================================================
+2026-05-20 17:09:30,608 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 17:09:30,615 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 17:09:30,615 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-20 17:09:30,619 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-20 17:09:30,620 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-20 17:09:30,621 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-20 17:09:30,624 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 17:09:30,624 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-20 17:09:30,624 [INFO] job_matcher —   Excellent : 5
+2026-05-20 17:09:30,624 [INFO] job_matcher —   High      : 2
+2026-05-20 17:09:30,624 [INFO] job_matcher —   Medium    : 0
+2026-05-20 17:09:30,624 [INFO] job_matcher —   Rejected  : 3
+2026-05-20 17:09:30,624 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 17:09:30,624 [INFO] job_matcher — ============================================================

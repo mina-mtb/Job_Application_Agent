@@ -1,0 +1,196 @@
+[
+  {
+    "jobTitle": "Junior Backend Developer",
+    "companyName": "Dedicare AB",
+    "jobLocation": "Gothenburg, Sweden",
+    "jobType": "Hybrid",
+    "jobDescription": "We are looking for a Junior Backend Developer to join our healthcare tech team. You will build REST APIs using Python and FastAPI, work with PostgreSQL, Docker, and contribute to CI/CD pipelines on Azure. Agile team, friendly environment. 0-3 years experience required.",
+    "requirements": [
+      "Python",
+      "FastAPI",
+      "REST APIs",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "nice_to_have": [
+      "Azure",
+      "GitHub Actions",
+      "Agile"
+    ],
+    "experienceLevel": "1-3",
+    "languages": "Swedish or English",
+    "source": "apify_linkedin",
+    "applyUrl": "https://dedicare.se/careers/mock/101",
+    "publishedAt": "2026-05-18",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": "Data Engineer / ML Engineer",
+    "companyName": "Hexagon AB",
+    "jobLocation": "Gothenburg, Sweden",
+    "jobType": "On-site",
+    "jobDescription": "Hexagon is hiring a Data/ML Engineer to support our industrial AI division. Build data pipelines with Python and SQL, deploy ML models with MLflow and Docker, work on Azure cloud infrastructure. Experience with PyTorch or TensorFlow is a plus.",
+    "requirements": [
+      "Python",
+      "SQL",
+      "Machine Learning",
+      "Azure",
+      "Docker"
+    ],
+    "nice_to_have": [
+      "PyTorch",
+      "MLflow",
+      "MLOps",
+      "Kubernetes"
+    ],
+    "experienceLevel": "2-4",
+    "languages": "English",
+    "source": "apify_linkedin",
+    "applyUrl": "https://hexagon.com/careers/mock/102",
+    "publishedAt": "2026-05-17",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": ".NET Developer",
+    "companyName": "Knowit AB",
+    "jobLocation": "Göteborg",
+    "jobType": "hybrid",
+    "jobDescription": "Knowit is growing and looking for a .NET Developer. You will work on customer projects in the public sector, building backend services with C#, ASP.NET Core, and SQL Server. Azure DevOps is used for CI/CD. Consulting role with great team culture.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "ASP.NET Core",
+      "SQL Server",
+      "Azure DevOps"
+    ],
+    "nice_to_have": [
+      "Docker",
+      "REST APIs",
+      "Entity Framework",
+      "Agile"
+    ],
+    "experienceLevel": "1-4",
+    "languages": "Swedish",
+    "source": "apify_indeed",
+    "applyUrl": "https://knowit.se/careers/mock/103",
+    "publishedAt": "2026-05-16",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": "Junior .NET Developer",
+    "companyName": "Volvo Cars",
+    "jobLocation": "Gothenburg, Sweden",
+    "jobType": "Hybrid",
+    "jobDescription": "Duplicate listing from a different source.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "SQL Server"
+    ],
+    "nice_to_have": [],
+    "experienceLevel": "1-3",
+    "languages": "English",
+    "source": "apify_linkedin",
+    "applyUrl": "https://careers.volvocars.com/mock/001b",
+    "publishedAt": "2026-05-18",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": "AI Research Engineer",
+    "companyName": "Zenseact",
+    "jobLocation": "Gothenburg, Sweden",
+    "jobType": "Hybrid",
+    "jobDescription": "Zenseact (Volvo Cars spin-off) is hiring an AI Research Engineer for autonomous driving. You will work on deep learning models for perception and prediction using PyTorch. Experience with CNNs, transformers, and Python is required. MLOps experience is a plus. Master's or PhD in relevant field preferred. 1-3 years experience.",
+    "requirements": [
+      "Python",
+      "PyTorch",
+      "Deep Learning",
+      "CNNs",
+      "Machine Learning"
+    ],
+    "nice_to_have": [
+      "MLOps",
+      "Docker",
+      "Azure",
+      "Transformers",
+      "LLM"
+    ],
+    "experienceLevel": "1-3",
+    "languages": "English",
+    "source": "apify_linkedin",
+    "applyUrl": "https://zenseact.com/careers/mock/104",
+    "publishedAt": "2026-05-15",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": "Barista",
+    "companyName": "Espresso House",
+    "jobLocation": "Gothenburg, Sweden",
+    "jobType": "Part-time",
+    "jobDescription": "Make coffee and serve customers. Customer service required.",
+    "requirements": [
+      "Customer service",
+      "Swedish"
+    ],
+    "nice_to_have": [],
+    "experienceLevel": "0-1",
+    "languages": "Swedish",
+    "source": "apify_indeed",
+    "applyUrl": "https://espressohouse.se/mock/999",
+    "publishedAt": "2026-05-14",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": "Cloud & DevOps Engineer",
+    "companyName": "Consid AB",
+    "jobLocation": "Göteborg",
+    "jobType": "Hybrid",
+    "jobDescription": "Consid is a Swedish IT consulting firm looking for a Cloud & DevOps Engineer. Work with Azure infrastructure, Kubernetes, Docker, Helm, and CI/CD pipelines. Python or C# scripting skills needed. You will serve multiple clients in different industries.",
+    "requirements": [
+      "Azure",
+      "Kubernetes",
+      "Docker",
+      "CI/CD",
+      "Helm"
+    ],
+    "nice_to_have": [
+      "Python",
+      "C#",
+      "Terraform",
+      "GitHub Actions"
+    ],
+    "experienceLevel": "2-5",
+    "languages": "Swedish or English",
+    "source": "apify_linkedin",
+    "applyUrl": "https://consid.se/careers/mock/105",
+    "publishedAt": "2026-05-14",
+    "compensation": "paid"
+  },
+  {
+    "jobTitle": "Junior AI Developer",
+    "companyName": "Peltarion",
+    "jobLocation": "Stockholm, Sweden",
+    "jobType": "Remote",
+    "jobDescription": "Peltarion is an AI platform company looking for a Junior AI Developer. Build LLM-powered applications, work with RAG architectures, LangChain, and Python. Help customers integrate AI into their products. Strong Python skills and understanding of ML fundamentals required.",
+    "requirements": [
+      "Python",
+      "LLM",
+      "LangChain",
+      "RAG",
+      "Machine Learning"
+    ],
+    "nice_to_have": [
+      "Azure",
+      "Docker",
+      "FastAPI",
+      "ChromaDB",
+      "MLOps"
+    ],
+    "experienceLevel": "0-2",
+    "languages": "English",
+    "source": "apify_linkedin",
+    "applyUrl": "https://peltarion.com/careers/mock/106",
+    "publishedAt": "2026-05-13",
+    "compensation": "paid"
+  }
+]

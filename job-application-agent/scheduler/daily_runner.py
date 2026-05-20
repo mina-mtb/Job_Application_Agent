@@ -150,7 +150,7 @@ def run_pipeline(config_path: str = "config/config.yaml",
     logger = logging.getLogger("daily_runner")
     today  = str(date.today())
 
-    with open(config_path) as f:
+    with open(config_path, encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     log_dir = config.get("paths", {}).get("logs", "logs")

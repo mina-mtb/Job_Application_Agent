@@ -112,8 +112,8 @@ def update_tracker(scored_jobs: list[dict], tracker_path: str) -> dict:
 if __name__ == "__main__":
     # Quick test
     import yaml
-    config = yaml.safe_load(open("config/config.yaml"))
+    config = yaml.safe_load(open("config/config.yaml", encoding="utf-8"))
     from datetime import date
-    test_jobs = json.load(open(f"data/scored/scored_jobs_{date.today()}.json"))
+    test_jobs = json.load(open(f"data/scored/scored_jobs_{date.today()}.json", encoding="utf-8"))
     stats = update_tracker(test_jobs, config["paths"]["tracker"])
     print(f"Tracker updated: {stats}")

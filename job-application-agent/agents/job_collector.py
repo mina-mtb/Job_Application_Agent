@@ -268,7 +268,7 @@ def run(config_path: str = "config/config.yaml") -> dict:
     Run the job collector.
     Returns summary of what was collected.
     """
-    with open(config_path) as f:
+    with open(config_path, encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     logger.info("=" * 60)

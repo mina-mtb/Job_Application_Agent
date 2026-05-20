@@ -86,7 +86,7 @@ def main():
     setup_logging(args.verbose)
     banner("3")
 
-    with open(args.config) as f:
+    with open(args.config, encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     phases = config.get("phases", {})

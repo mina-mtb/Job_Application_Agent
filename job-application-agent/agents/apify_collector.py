@@ -85,7 +85,8 @@ class ApifyClient:
 
     def run_actor(self, actor_id: str, input_data: dict) -> str:
         """Start an actor run and return the run ID."""
-        result = self._request("POST", f"/acts/{actor_id}/runs", input_data)
+        actor_id_safe = actor_id.replace("/", "~")
+        result = self._request("POST", f"/acts/{actor_id_safe}/runs", input_data)
         return result["data"]["id"]
 
     def wait_for_run(self, run_id: str, max_wait: int = 120, poll_interval: int = 5) -> str:
@@ -225,7 +226,7 @@ def run(config_path: str = "config/config.yaml",
 
     Returns summary dict.
     """
-    with open(config_path) as f:
+    with open(config_path, encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     logger.info("=" * 60)
