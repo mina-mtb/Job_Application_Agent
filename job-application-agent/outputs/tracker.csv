@@ -1,8 +1,15 @@
 job_id,title,company,location,score,priority,status,cv_generated,date_added,date_applied,notes
-job_002,AI Engineer (Junior),Chalmers Ventures,"Gothenburg, Sweden",97,excellent,new,no,2026-05-20,,
+ai_research_engineer_zenseact_004,AI Research Engineer,Zenseact,"Gothenburg, Sweden",98,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Zenseact_AI_Research_Engineer_2026-05-20.md
+job_002,AI Engineer (Junior),Chalmers Ventures,"Gothenburg, Sweden",97,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Chalmers_Ventures_AI_Engineer__Junior__2026-05-20.md
+data_engineer___ml_e_hexagon_ab_001,Data Engineer / ML Engineer,Hexagon AB,"Gothenburg, Sweden",97,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Hexagon_AB_Data_Engineer___ML_Engine_2026-05-20.md
 job_001,Junior .NET Developer,Volvo Cars,"Gothenburg, Sweden",96,excellent,new,no,2026-05-20,,
-job_004,Cloud Developer,AFRY,"Gothenburg, Sweden",95,excellent,new,no,2026-05-20,,
-job_010,LLMOps / AI Platform Engineer,King (Game Studio),"Stockholm, Sweden",95,excellent,new,no,2026-05-20,,
-job_005,ML Engineer Intern,Spotify,"Stockholm, Sweden (Remote possible)",94,excellent,new,no,2026-05-20,,
-job_009,Software Developer — Java/Python,Stena Line,"Gothenburg, Sweden",89,high,new,no,2026-05-20,,
-job_007,Backend Developer (.NET),Klarna,"Stockholm, Sweden",87,high,new,no,2026-05-20,,
+job_004,Cloud Developer,AFRY,"Gothenburg, Sweden",95,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_AFRY_Cloud_Developer_2026-05-20.md
+job_010,LLMOps / AI Platform Engineer,King (Game Studio),"Stockholm, Sweden",95,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_King__Game_Studio__LLMOps___AI_Platform_Engi_2026-05-20.md
+junior_ai_developer_peltarion_007,Junior AI Developer,Peltarion,"Stockholm, Sweden",95,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Peltarion_Junior_AI_Developer_2026-05-20.md
+job_005,ML Engineer Intern,Spotify,"Stockholm, Sweden (Remote possible)",94,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Spotify_ML_Engineer_Intern_2026-05-20.md
+cloud___devops_engin_consid_ab_006,Cloud & DevOps Engineer,Consid AB,"Gothenburg, Sweden",91,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Consid_AB_Cloud___DevOps_Engineer_2026-05-20.md
+_net_developer_knowit_ab_002,.NET Developer,Knowit AB,"Gothenburg, Sweden",90,excellent,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Knowit_AB__NET_Developer_2026-05-20.md
+job_009,Software Developer — Java/Python,Stena Line,"Gothenburg, Sweden",89,high,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Stena_Line_Software_Developer___Java_2026-05-20.md
+job_007,Backend Developer (.NET),Klarna,"Stockholm, Sweden",87,high,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Klarna_Backend_Developer___NET__2026-05-20.md
+junior__net_develope_volvo_cars_003,Junior .NET Developer,Volvo Cars,"Gothenburg, Sweden",87,high,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Volvo_Cars_Junior__NET_Developer_2026-05-20.md
+junior_backend_devel_dedicare_ab_000,Junior Backend Developer,Dedicare AB,"Gothenburg, Sweden",85,high,cv_ready,yes,2026-05-20,,CV: CV_Mina_Tahmasebi_Dedicare_AB_Junior_Backend_Developer_2026-05-20.md

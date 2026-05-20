@@ -60,14 +60,25 @@ mock_jobs_file: data/raw/mock_jobs.json
 apify:
   token: "apify_api_IJsb6jxI8AjA9dCS9PoyGOMBS75UzQ1F07ar"
   actor_id: "bebity/linkedin-jobs-scraper"
-  search_terms:
-    - "Backend Developer Gothenburg"
-    - ".NET Developer Sweden"
-    - "Junior AI Engineer Sweden"
-    - "Cloud Developer Gothenburg"
-    - "ML Engineer Intern Sweden"
-  location: "Gothenburg, Sweden"
-  max_results_per_search: 25
+
+# --- SEARCH PARAMS ---
+search:
+  keywords:
+    - ".NET Developer"
+    - "C# Developer"
+    - "Backend Developer"
+    - "Cloud Developer"
+    - "Junior AI Engineer"
+    - "ML Engineer"
+    - "Software Developer"
+  locations:
+    - "Gothenburg"
+    - "Sweden"
+    - "Remote Sweden"
+  max_jobs_per_keyword: 100
+  max_total_jobs_per_day: 500
+  include_remote: true
+  include_hybrid: true
 
 # --- OBSIDIAN VAULT ---
 obsidian_vault: "../MinaJobAgentVault"

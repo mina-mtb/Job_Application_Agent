@@ -45,6 +45,13 @@ def call_claude(prompt: str, system: str, max_tokens: int = 1500) -> str:
     Returns the text response.
     Raises on failure.
     """
+    if os.environ.get("CV_TAILOR_MOCK") == "1":
+        if "validator" in system.lower():
+            return '{"is_truthful": true, "fabrications": []}'
+        elif "optimizer" in system.lower():
+            return '["mock_keyword"]'
+        return "## Mock Tailored CV\nThis is a mock CV generated for testing."
+        
     try:
         import anthropic
         client = anthropic.Anthropic()  # uses ANTHROPIC_API_KEY env var
@@ -157,6 +164,53 @@ Do not suggest skills Mina clearly does not have."""
         return []
 
 
+# ── Truthfulness Validation ────────────────────────────────────────────────────
+
+VALIDATION_SYSTEM = """You are a CV truthfulness validator.
+Compare the Tailored CV against the Base CV.
+Are there any fabricated years of experience, fabricated employers, new certifications, or false claims in the Tailored CV that are not supported by the Base CV?
+Output ONLY a short JSON object:
+{
+  "is_truthful": true/false,
+  "fabrications": ["list of fabricated items, if any"]
+}"""
+
+def validate_cv_truthfulness(tailored_cv: str, base_cv: str, job_id: str, output_dir: Path) -> bool:
+    prompt = f"""Base CV:
+{base_cv}
+
+Tailored CV:
+{tailored_cv}
+
+Analyze if the Tailored CV fabricates any information not supported by the Base CV."""
+
+    try:
+        raw = call_claude(prompt, VALIDATION_SYSTEM, max_tokens=300)
+        match = re.search(r'\{.*?\}', raw, re.DOTALL)
+        if match:
+            res = json.loads(match.group())
+            is_truthful = res.get("is_truthful", True)
+            fabrications = res.get("fabrications", [])
+            
+            report_path = output_dir.parent / "cv_truthfulness_report.md"
+            today = str(date.today())
+            if not report_path.exists():
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+                report_path.write_text("# CV Truthfulness Report\n\n", encoding="utf-8")
+            
+            with open(report_path, "a", encoding="utf-8") as f:
+                f.write(f"### Job ID: {job_id} ({today})\n")
+                f.write(f"- Truthful: {is_truthful}\n")
+                if fabrications:
+                    f.write("- Fabrications detected:\n")
+                    for fab in fabrications:
+                        f.write(f"  - {fab}\n")
+                f.write("\n")
+            return is_truthful
+    except Exception as e:
+        logger.warning(f"Truthfulness validation failed: {e}")
+    return True
+
 # ── File helpers ───────────────────────────────────────────────────────────────
 
 def make_cv_filename(job: dict) -> str:
@@ -224,6 +278,12 @@ def tailor_one_cv(job: dict, base_cv: str, output_dir: Path,
             note += "\n".join(f"- `{s}`" for s in suggestions)
             tailored_cv += note
 
+    # Run truthfulness validation
+    logger.info(f"    Validating truthfulness...")
+    is_truthful = validate_cv_truthfulness(tailored_cv, base_cv, job_id, output_dir)
+    if not is_truthful:
+        logger.warning(f"    WARNING: Fabrications detected in CV for {job_id}")
+
     # Save CV file
     filename = make_cv_filename(job)
     out_path = output_dir / filename
@@ -270,6 +330,11 @@ def run(config_path: str = "config/config.yaml",
     """
     with open(config_path, encoding="utf-8") as f:
         config = yaml.safe_load(f)
+
+    use_mock = config.get("apify", {}).get("use_mock_data", False)
+    if use_mock:
+        os.environ["CV_TAILOR_MOCK"] = "1"
+        logger.info("Using mock mode for Claude API calls")
 
     logger.info("=" * 60)
     logger.info("CV Tailor — Phase 3 starting")

@@ -111,6 +111,22 @@ def normalize_type(job_type: str) -> str:
     return TYPE_NORMALIZATIONS.get(key, job_type.strip())
 
 
+def is_location_accepted(location: str, job_type: str) -> bool:
+    """Check if location is acceptable (Gothenburg, Sweden+remote/hybrid, or remote)."""
+    loc = location.lower()
+    typ = job_type.lower()
+    if "gothenburg" in loc or "göteborg" in loc:
+        return True
+    if "sweden" in loc and ("remote" in loc or "hybrid" in loc or "remote" in typ or "hybrid" in typ):
+        return True
+    if "remote" in loc or "remote" in typ:
+        # Assuming remote jobs accept Sweden-based candidates unless stated otherwise
+        if "only" in loc and "sweden" not in loc:
+            return False
+        return True
+    return False
+
+
 def normalize_job(job: dict) -> dict:
     """Apply all normalization rules to a single job."""
     job = normalize_fields(job)
@@ -262,12 +278,45 @@ def clean_jobs(raw_jobs: list[dict], config: dict) -> tuple[list[dict], list[dic
             logger.info(f"  IRRELEVANT [{job_id}] {title} @ {company} — {reason}")
             rejected.append({**job, "clean_rejection_reason": reason})
             continue
+            
+        # Step 4.5: Location check
+        if not is_location_accepted(job["location"], job["type"]):
+            logger.info(f"  LOCATION REJECTED [{job_id}] {title} @ {company} — {job['location']} ({job['type']})")
+            rejected.append({**job, "clean_rejection_reason": "Location not accepted"})
+            continue
 
-        # Step 5: Unpaid check
+        # Step 5: Config-based rejection checks
         rejection_filters = config.get("rejection_filters", {})
+        
+        # Unpaid check
         if rejection_filters.get("unpaid") and job.get("compensation") == "unpaid":
             logger.info(f"  UNPAID [{job_id}] {title} @ {company}")
             rejected.append({**job, "clean_rejection_reason": "Unpaid position"})
+            continue
+            
+        # Irrelevant keywords check (e.g. native swedish only)
+        combined_text = (job["title"] + " " + job["description"]).lower()
+        irrelevant_kws = rejection_filters.get("irrelevant_keywords", [])
+        rejected_by_kw = False
+        for kw in irrelevant_kws:
+            if kw.lower() in combined_text:
+                logger.info(f"  KEYWORD REJECTED [{job_id}] {title} @ {company} — {kw}")
+                rejected.append({**job, "clean_rejection_reason": f"Contains irrelevant keyword: {kw}"})
+                rejected_by_kw = True
+                break
+        if rejected_by_kw:
+            continue
+            
+        # Experience flags check (e.g. 8+ years)
+        exp_flags = rejection_filters.get("required_experience_flags", [])
+        rejected_by_exp = False
+        for flag in exp_flags:
+            if flag.lower() in combined_text:
+                logger.info(f"  EXPERIENCE REJECTED [{job_id}] {title} @ {company} — {flag}")
+                rejected.append({**job, "clean_rejection_reason": f"Requires excessive experience: {flag}"})
+                rejected_by_exp = True
+                break
+        if rejected_by_exp:
             continue
 
         logger.info(f"  ✓ CLEAN [{job_id}] {title} @ {company}")

@@ -123,3 +123,27 @@
 2026-05-20 17:09:30,624 [INFO] job_matcher —   Rejected  : 3
 2026-05-20 17:09:30,624 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
 2026-05-20 17:09:30,624 [INFO] job_matcher — ============================================================
+2026-05-20 17:25:16,817 [INFO] job_matcher — ============================================================
+2026-05-20 17:25:16,817 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 17:25:16,825 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 17:25:16,825 [INFO] job_matcher — Loaded 13 jobs from data\cleaned\cleaned_jobs_2026-05-20.json
+2026-05-20 17:25:16,837 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 17:25:16,837 [INFO] job_matcher — SUMMARY: 13 jobs processed
+2026-05-20 17:25:16,837 [INFO] job_matcher —   Excellent : 9
+2026-05-20 17:25:16,837 [INFO] job_matcher —   High      : 4
+2026-05-20 17:25:16,837 [INFO] job_matcher —   Medium    : 0
+2026-05-20 17:25:16,837 [INFO] job_matcher —   Rejected  : 0
+2026-05-20 17:25:16,837 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 17:25:16,837 [INFO] job_matcher — ============================================================
+2026-05-20 17:26:50,675 [INFO] job_matcher — ============================================================
+2026-05-20 17:26:50,676 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 17:26:50,692 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 17:26:50,693 [INFO] job_matcher — Loaded 13 jobs from data\cleaned\cleaned_jobs_2026-05-20.json
+2026-05-20 17:26:50,737 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 17:26:50,738 [INFO] job_matcher — SUMMARY: 13 jobs processed
+2026-05-20 17:26:50,738 [INFO] job_matcher —   Excellent : 9
+2026-05-20 17:26:50,738 [INFO] job_matcher —   High      : 4
+2026-05-20 17:26:50,738 [INFO] job_matcher —   Medium    : 0
+2026-05-20 17:26:50,738 [INFO] job_matcher —   Rejected  : 0
+2026-05-20 17:26:50,738 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 17:26:50,738 [INFO] job_matcher — ============================================================

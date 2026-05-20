@@ -27,6 +27,9 @@ from agents.job_cleaner     import run as run_cleaner
 from agents.job_matcher     import run as run_matcher
 from agents.cv_tailor       import run as run_cv_tailor
 from agents.tracker_updater import update_tracker
+from agents.report_generator import generate_report
+import tempfile
+import os
 
 
 def setup_logging(verbose=False):
@@ -80,6 +83,9 @@ def main():
                         help="Minimum score for CV generation (default: 85)")
     parser.add_argument("--max-cvs",   type=int, default=None,
                         help="Max number of CVs to generate (default: all qualifying)")
+    parser.add_argument("--test",      action="store_true", help="mock data only, no internet needed")
+    parser.add_argument("--dry-run",   action="store_true", help="fetch real jobs but don't save tracker")
+    parser.add_argument("--daily",     action="store_true", help="full real run, updates everything")
     parser.add_argument("--verbose",   action="store_true")
     args = parser.parse_args()
 
@@ -89,16 +95,45 @@ def main():
     with open(args.config, encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
+    if "apify" not in config:
+        config["apify"] = {}
+        
     phases = config.get("phases", {})
+    
+    if args.test:
+        config["apify"]["use_mock_data"] = True
+    elif args.dry_run:
+        config["apify"]["use_mock_data"] = False
+        phases["tracker_update"] = False
+    elif args.daily:
+        config["apify"]["use_mock_data"] = False
+        phases["tracker_update"] = True
+        
+    # Write temp config to pass overrides to agents
+    fd, temp_path = tempfile.mkstemp(suffix=".yaml")
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        yaml.dump(config, f)
+    config_path_to_use = temp_path
+
     today  = str(date.today())
     results = {}
+    stats = {
+        "raw_collected": 0,
+        "after_cleaning": 0,
+        "duplicates_removed": 0,
+        "already_applied_skipped": 0,
+        "relevant_jobs": 0,
+        "high_priority": 0,
+        "cvs_generated": 0
+    }
 
     # ── STEP 1: Collect ───────────────────────────────────────────────────────
     if args.phase in ("all", "collect") and phases.get("collect", True):
         print("━" * 60)
         print("STEP 1/5 — Job Collector")
         print("━" * 60)
-        c = run_collector(args.config)
+        c = run_collector(config_path_to_use)
+        stats["raw_collected"] = c.get('total', 0)
         print(f"  ✓ {c['total']} jobs collected from {len(c['sources'])} sources\n")
 
     # ── STEP 2: Clean ─────────────────────────────────────────────────────────
@@ -106,7 +141,8 @@ def main():
         print("━" * 60)
         print("STEP 2/5 — Job Cleaner")
         print("━" * 60)
-        cl = run_cleaner(args.config)
+        cl = run_cleaner(config_path_to_use)
+        stats["after_cleaning"] = cl.get('cleaned', 0)
         print(f"  ✓ Clean: {cl['cleaned']}  Rejected: {cl['rejected']}  "
               f"Input: {cl['total_input']}\n")
 
@@ -118,7 +154,13 @@ def main():
         cleaned_file = Path(config["paths"]["cleaned_jobs"]) / f"cleaned_jobs_{today}.json"
         if cleaned_file.exists():
             config["mock_jobs_file"] = str(cleaned_file)
-        m_summary, results = run_matcher(args.config)
+            # Re-write config since we updated it
+            with open(config_path_to_use, "w", encoding="utf-8") as f:
+                yaml.dump(config, f)
+                
+        m_summary, results = run_matcher(config_path_to_use)
+        stats["relevant_jobs"] = m_summary.get("excellent", 0) + m_summary.get("high", 0) + m_summary.get("medium", 0)
+        stats["high_priority"] = m_summary.get("excellent", 0) + m_summary.get("high", 0)
         print_scored_table(results)
 
     # ── STEP 4: CV Tailor ─────────────────────────────────────────────────────
@@ -127,10 +169,11 @@ def main():
         print("STEP 4/5 — CV Tailor (Claude API)")
         print("━" * 60)
         cv_summary = run_cv_tailor(
-            config_path=args.config,
+            config_path=config_path_to_use,
             min_score=args.min_score,
             max_cvs=args.max_cvs,
         )
+        stats["cvs_generated"] = cv_summary.get("generated", 0)
         print(f"\n  ✓ CVs generated : {cv_summary.get('generated', 0)}")
         print(f"  ✓ Errors        : {cv_summary.get('errors', 0)}")
         if cv_summary.get("files"):
@@ -149,13 +192,40 @@ def main():
                     results.get("high", []) +
                     results.get("medium", []))
             t = update_tracker(kept, config["paths"]["tracker"])
+            stats["already_applied_skipped"] = t.get('skipped_protected', 0)
             print(f"  ✓ Added: {t['added']}  Protected: {t['skipped_protected']}  "
                   f"Refreshed: {t['updated_score']}")
         print(f"  ✓ Tracker: {config['paths']['tracker']}\n")
 
+    # ── STEP 6: Generate Daily Report ─────────────────────────────────────────
+    print("━" * 60)
+    print("STEP 6/6 — Generating Daily Report")
+    print("━" * 60)
+    # Collect ready jobs for report (all jobs that got a CV generated)
+    ready_jobs = []
+    if results:
+        # Get jobs that have CV generated. Since we updated tracker, we can just use the kept ones.
+        kept = results.get("excellent", []) + results.get("high", [])
+        for j in kept:
+            # Check if this job has a generated CV
+            j["cv_file"] = "CV generated"
+            ready_jobs.append(j)
+            
+    out_dir = Path("outputs/daily_reports")
+    report_file = generate_report(stats, ready_jobs, str(out_dir))
+    print(f"  ✓ Report generated: {report_file}\n")
+    
+    # Cleanup temp config
+    if os.path.exists(config_path_to_use) and config_path_to_use != args.config:
+        try:
+            os.remove(config_path_to_use)
+        except Exception:
+            pass
+
     # ── Final summary ─────────────────────────────────────────────────────────
     print("=" * 60)
     print("  PIPELINE COMPLETE ✅")
+    print(f"  Report   : {report_file}")
     print(f"  Tracker  : {config['paths']['tracker']}")
     print(f"  CVs      : {config['paths']['tailored_cvs']}")
     print(f"  Scored   : data/scored/scored_jobs_{today}.json")

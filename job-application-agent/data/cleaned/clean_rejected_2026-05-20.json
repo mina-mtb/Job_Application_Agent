@@ -49,6 +49,32 @@
     "clean_rejection_reason": "Near-duplicate of junior__net_develope_volvo_cars_003"
   },
   {
+    "id": "job_003",
+    "title": "Senior C# Backend Developer",
+    "company": "Ericsson",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "Experienced Senior C# Backend Developer with 8+ years needed to lead backend architecture for 5G software systems. Must have deep expertise in distributed systems, performance tuning, and mentoring junior developers.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "8+ years experience",
+      "Distributed Systems",
+      "Team Lead"
+    ],
+    "nice_to_have": [
+      "Azure",
+      "Kubernetes"
+    ],
+    "experience_years": "8+",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://ericsson.com/careers/mock/003",
+    "posted_date": "2025-05-16",
+    "compensation": "paid",
+    "clean_rejection_reason": "Requires excessive experience: 8+ years"
+  },
+  {
     "id": "job_006",
     "title": "Retail Sales Associate",
     "company": "H&M",

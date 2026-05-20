@@ -40,26 +40,15 @@ import yaml
 logger = logging.getLogger("apify_collector")
 
 
-# ── Search configurations for Mina ────────────────────────────────────────────
-
-LINKEDIN_SEARCHES = [
-    {"keywords": "Junior .NET Developer",        "location": "Gothenburg, Sweden"},
-    {"keywords": "C# Backend Developer Junior",  "location": "Gothenburg, Sweden"},
-    {"keywords": "Junior AI Engineer Python",    "location": "Sweden"},
-    {"keywords": "Cloud Developer Azure Junior", "location": "Gothenburg, Sweden"},
-    {"keywords": "ML Engineer Intern",           "location": "Sweden"},
-    {"keywords": "LLM Developer Python",         "location": "Sweden"},
-    {"keywords": "Software Developer .NET",      "location": "Gothenburg, Sweden"},
-    {"keywords": "Backend Developer Python",     "location": "Gothenburg, Sweden"},
-]
-
-INDEED_SEARCHES = [
-    {"query": "Junior .NET Developer",    "location": "Gothenburg"},
-    {"query": "Junior AI Developer",      "location": "Sweden"},
-    {"query": "Cloud Developer Junior",   "location": "Gothenburg"},
-    {"query": "Backend Developer C#",     "location": "Sweden"},
-    {"query": "ML Engineer student",      "location": "Sweden"},
-]
+def get_dynamic_searches(config: dict) -> list[dict]:
+    search_cfg = config.get("search", {})
+    keywords = search_cfg.get("keywords", [])
+    locations = search_cfg.get("locations", [])
+    searches = []
+    for kw in keywords:
+        for loc in locations:
+            searches.append({"keywords": kw, "query": kw, "location": loc})
+    return searches
 
 
 # ── Apify API client ───────────────────────────────────────────────────────────
@@ -162,7 +151,8 @@ def collect_linkedin(client: ApifyClient, config: dict, max_per_search: int = 15
     )
     all_jobs = []
 
-    for search in LINKEDIN_SEARCHES:
+    searches = get_dynamic_searches(config)
+    for search in searches:
         logger.info(f"  LinkedIn: '{search['keywords']}' in {search['location']}")
         try:
             input_data = {
@@ -192,7 +182,8 @@ def collect_indeed(client: ApifyClient, config: dict, max_per_search: int = 15) 
     )
     all_jobs = []
 
-    for search in INDEED_SEARCHES:
+    searches = get_dynamic_searches(config)
+    for search in searches:
         logger.info(f"  Indeed: '{search['query']}' in {search['location']}")
         try:
             input_data = {
@@ -252,18 +243,26 @@ def run(config_path: str = "config/config.yaml",
 
     client = ApifyClient(token)
     all_jobs = []
+    
+    max_per_kw = config.get("search", {}).get("max_jobs_per_keyword", 100)
+    max_total = config.get("search", {}).get("max_total_jobs_per_day", 500)
 
     # LinkedIn
     logger.info("Collecting from LinkedIn...")
-    linkedin_jobs = collect_linkedin(client, config)
+    linkedin_jobs = collect_linkedin(client, config, max_per_search=max_per_kw)
     all_jobs.extend(linkedin_jobs)
     logger.info(f"LinkedIn total: {len(linkedin_jobs)} jobs")
 
     # Indeed
     logger.info("Collecting from Indeed...")
-    indeed_jobs = collect_indeed(client, config)
+    indeed_jobs = collect_indeed(client, config, max_per_search=max_per_kw)
     all_jobs.extend(indeed_jobs)
     logger.info(f"Indeed total: {len(indeed_jobs)} jobs")
+
+    # Apply max_total_jobs_per_day limit if exceeded
+    if len(all_jobs) > max_total:
+        logger.info(f"Capping total jobs at {max_total} (was {len(all_jobs)})")
+        all_jobs = all_jobs[:max_total]
 
     # Save
     output_file.write_text(

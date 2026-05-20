@@ -31,7 +31,7 @@ TRACKER_FIELDS = [
 ]
 
 # Statuses set manually by Mina — never auto-overwrite these
-PROTECTED_STATUSES = {"applied", "follow_up", "interview", "offer", "declined", "rejected_by_me"}
+PROTECTED_STATUSES = {"applied", "interview", "offer", "rejected", "withdrawn"}
 
 
 def load_tracker(tracker_path: str) -> dict:
@@ -74,7 +74,7 @@ def update_tracker(scored_jobs: list[dict], tracker_path: str) -> dict:
             continue
 
         if job_id in existing:
-            current_status = existing[job_id].get("status", "")
+            current_status = existing[job_id].get("status", "").lower()
             if current_status in PROTECTED_STATUSES:
                 logger.info(f"  Skipping [{job_id}] — status '{current_status}' is protected")
                 stats["skipped_protected"] += 1
