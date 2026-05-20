@@ -1,0 +1,110 @@
+2026-05-19 22:18:57,095 [INFO] job_matcher — ============================================================
+2026-05-19 22:18:57,095 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-19 22:18:57,103 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-19 22:18:57,103 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-19 22:18:57,103 [INFO] job_matcher —   ✓ [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (HIGH)
+2026-05-19 22:18:57,104 [INFO] job_matcher —   ✓ [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (HIGH)
+2026-05-19 22:18:57,104 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-19 22:18:57,104 [INFO] job_matcher —   ✓ [job_004] Cloud Developer @ AFRY — Score: 95/100 (HIGH)
+2026-05-19 22:18:57,104 [INFO] job_matcher —   ✓ [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (HIGH)
+2026-05-19 22:18:57,104 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-19 22:18:57,104 [INFO] job_matcher —   ✓ [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (HIGH)
+2026-05-19 22:18:57,104 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-19 22:18:57,105 [INFO] job_matcher —   ✓ [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (HIGH)
+2026-05-19 22:18:57,105 [INFO] job_matcher —   ✓ [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (HIGH)
+2026-05-19 22:18:57,106 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-19 22:18:57,107 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-19 22:18:57,107 [INFO] job_matcher —   Excellent : 0
+2026-05-19 22:18:57,107 [INFO] job_matcher —   High      : 7
+2026-05-19 22:18:57,107 [INFO] job_matcher —   Medium    : 0
+2026-05-19 22:18:57,107 [INFO] job_matcher —   Rejected  : 3
+2026-05-19 22:18:57,107 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-19.json
+2026-05-19 22:18:57,107 [INFO] job_matcher — ============================================================
+2026-05-19 22:19:15,841 [INFO] job_matcher — ============================================================
+2026-05-19 22:19:15,841 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-19 22:19:15,847 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-19 22:19:15,847 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-19 22:19:15,847 [INFO] job_matcher —   ✓ [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (EXCELLENT)
+2026-05-19 22:19:15,848 [INFO] job_matcher —   ✓ [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (EXCELLENT)
+2026-05-19 22:19:15,848 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-19 22:19:15,848 [INFO] job_matcher —   ✓ [job_004] Cloud Developer @ AFRY — Score: 95/100 (EXCELLENT)
+2026-05-19 22:19:15,848 [INFO] job_matcher —   ✓ [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (EXCELLENT)
+2026-05-19 22:19:15,848 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-19 22:19:15,848 [INFO] job_matcher —   ✓ [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (HIGH)
+2026-05-19 22:19:15,848 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-19 22:19:15,848 [INFO] job_matcher —   ✓ [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (HIGH)
+2026-05-19 22:19:15,848 [INFO] job_matcher —   ✓ [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (EXCELLENT)
+2026-05-19 22:19:15,849 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-19 22:19:15,849 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-19 22:19:15,849 [INFO] job_matcher —   Excellent : 5
+2026-05-19 22:19:15,850 [INFO] job_matcher —   High      : 2
+2026-05-19 22:19:15,850 [INFO] job_matcher —   Medium    : 0
+2026-05-19 22:19:15,850 [INFO] job_matcher —   Rejected  : 3
+2026-05-19 22:19:15,850 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-19.json
+2026-05-19 22:19:15,850 [INFO] job_matcher — ============================================================
+2026-05-20 07:03:24,609 [INFO] job_matcher — ============================================================
+2026-05-20 07:03:24,609 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 07:03:24,617 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 07:03:24,617 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-20 07:03:24,617 [INFO] job_matcher —   ✓ [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (EXCELLENT)
+2026-05-20 07:03:24,617 [INFO] job_matcher —   ✓ [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (EXCELLENT)
+2026-05-20 07:03:24,618 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-20 07:03:24,618 [INFO] job_matcher —   ✓ [job_004] Cloud Developer @ AFRY — Score: 95/100 (EXCELLENT)
+2026-05-20 07:03:24,618 [INFO] job_matcher —   ✓ [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (EXCELLENT)
+2026-05-20 07:03:24,618 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-20 07:03:24,618 [INFO] job_matcher —   ✓ [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (HIGH)
+2026-05-20 07:03:24,618 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-20 07:03:24,618 [INFO] job_matcher —   ✓ [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (HIGH)
+2026-05-20 07:03:24,618 [INFO] job_matcher —   ✓ [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (EXCELLENT)
+2026-05-20 07:03:24,620 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 07:03:24,620 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-20 07:03:24,621 [INFO] job_matcher —   Excellent : 5
+2026-05-20 07:03:24,621 [INFO] job_matcher —   High      : 2
+2026-05-20 07:03:24,621 [INFO] job_matcher —   Medium    : 0
+2026-05-20 07:03:24,621 [INFO] job_matcher —   Rejected  : 3
+2026-05-20 07:03:24,621 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 07:03:24,621 [INFO] job_matcher — ============================================================
+2026-05-20 07:03:41,077 [INFO] job_matcher — ============================================================
+2026-05-20 07:03:41,077 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 07:03:41,084 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 07:03:41,084 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (EXCELLENT)
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (EXCELLENT)
+2026-05-20 07:03:41,085 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_004] Cloud Developer @ AFRY — Score: 95/100 (EXCELLENT)
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (EXCELLENT)
+2026-05-20 07:03:41,085 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (HIGH)
+2026-05-20 07:03:41,085 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (HIGH)
+2026-05-20 07:03:41,085 [INFO] job_matcher —   ✓ [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (EXCELLENT)
+2026-05-20 07:03:41,087 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 07:03:41,087 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-20 07:03:41,087 [INFO] job_matcher —   Excellent : 5
+2026-05-20 07:03:41,087 [INFO] job_matcher —   High      : 2
+2026-05-20 07:03:41,087 [INFO] job_matcher —   Medium    : 0
+2026-05-20 07:03:41,087 [INFO] job_matcher —   Rejected  : 3
+2026-05-20 07:03:41,087 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 07:03:41,087 [INFO] job_matcher — ============================================================
+2026-05-20 12:41:16,097 [INFO] job_matcher — ============================================================
+2026-05-20 12:41:16,097 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 12:41:16,106 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 12:41:16,106 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-20 12:41:16,106 [INFO] job_matcher —   ✓ [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_004] Cloud Developer @ AFRY — Score: 95/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (HIGH)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (HIGH)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (EXCELLENT)
+2026-05-20 12:41:16,108 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 12:41:16,108 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Excellent : 5
+2026-05-20 12:41:16,109 [INFO] job_matcher —   High      : 2
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Medium    : 0
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Rejected  : 3
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 12:41:16,109 [INFO] job_matcher — ============================================================

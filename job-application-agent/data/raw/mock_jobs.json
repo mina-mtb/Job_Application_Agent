@@ -1,0 +1,209 @@
+[
+  {
+    "id": "job_001",
+    "title": "Junior .NET Developer",
+    "company": "Volvo Cars",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "We are looking for a Junior .NET Developer to join our connected vehicles software team. You will build and maintain backend services using C# and ASP.NET Core, work with microservices architecture, and contribute to CI/CD pipelines using Azure DevOps. Experience with SQL Server and REST APIs is required.",
+    "requirements": [
+      "C#",
+      ".NET / ASP.NET Core",
+      "SQL Server",
+      "REST APIs",
+      "Microservices",
+      "Azure DevOps",
+      "Git"
+    ],
+    "nice_to_have": ["Docker", "RabbitMQ", "Agile/Scrum"],
+    "experience_years": "1-3",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://careers.volvocars.com/mock/001",
+    "posted_date": "2025-05-18"
+  },
+  {
+    "id": "job_002",
+    "title": "AI Engineer (Junior)",
+    "company": "Chalmers Ventures",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "Join a fast-growing AI startup incubated at Chalmers. We need a Junior AI Engineer to help build LLM-powered products. Responsibilities include RAG system development, prompt engineering, Python backend development, and working with vector databases. Prior experience with LangChain or similar frameworks is a strong plus.",
+    "requirements": [
+      "Python",
+      "LLM / Generative AI",
+      "RAG",
+      "LangChain",
+      "REST APIs"
+    ],
+    "nice_to_have": ["Docker", "Azure", "FastAPI", "ChromaDB"],
+    "experience_years": "0-2",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://chalmerventures.com/mock/002",
+    "posted_date": "2025-05-17"
+  },
+  {
+    "id": "job_003",
+    "title": "Senior C# Backend Developer",
+    "company": "Ericsson",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "Experienced Senior C# Backend Developer with 8+ years needed to lead backend architecture for 5G software systems. Must have deep expertise in distributed systems, performance tuning, and mentoring junior developers.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "8+ years experience",
+      "Distributed Systems",
+      "Team Lead"
+    ],
+    "nice_to_have": ["Azure", "Kubernetes"],
+    "experience_years": "8+",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://ericsson.com/careers/mock/003",
+    "posted_date": "2025-05-16"
+  },
+  {
+    "id": "job_004",
+    "title": "Cloud Developer",
+    "company": "AFRY",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "AFRY is hiring a Cloud Developer to work on infrastructure and deployment pipelines for industrial clients. Key tools include Azure, Docker, Kubernetes, and CI/CD pipelines. You will collaborate with agile teams and help migrate on-prem systems to cloud-native architectures.",
+    "requirements": [
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "Python or C#"
+    ],
+    "nice_to_have": ["Helm", "Terraform", "Agile", "REST APIs"],
+    "experience_years": "1-4",
+    "language_requirement": "Swedish or English",
+    "source": "mock",
+    "url": "https://afry.com/careers/mock/004",
+    "posted_date": "2025-05-15"
+  },
+  {
+    "id": "job_005",
+    "title": "ML Engineer Intern",
+    "company": "Spotify",
+    "location": "Stockholm, Sweden (Remote possible)",
+    "type": "Remote/Hybrid",
+    "description": "Spotify is looking for an ML Engineer Intern to join the recommendations team. You will work on model training pipelines, feature engineering, and experimenting with deep learning architectures. This is a paid internship for students currently enrolled in a relevant Master's or PhD program.",
+    "requirements": [
+      "Python",
+      "Machine Learning",
+      "PyTorch or TensorFlow",
+      "SQL"
+    ],
+    "nice_to_have": ["MLOps", "GCP", "Recommendation Systems", "A/B testing"],
+    "experience_years": "0-1 (student)",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://spotify.com/careers/mock/005",
+    "posted_date": "2025-05-14"
+  },
+  {
+    "id": "job_006",
+    "title": "Retail Sales Associate",
+    "company": "H&M",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "H&M is hiring part-time retail associates for the city center store. Tasks include customer service, stock replenishment, and point-of-sale operations.",
+    "requirements": [
+      "Customer service",
+      "Swedish (native)"
+    ],
+    "nice_to_have": [],
+    "experience_years": "0-2",
+    "language_requirement": "Swedish (native required)",
+    "source": "mock",
+    "url": "https://hm.com/careers/mock/006",
+    "posted_date": "2025-05-13"
+  },
+  {
+    "id": "job_007",
+    "title": "Backend Developer (.NET)",
+    "company": "Klarna",
+    "location": "Stockholm, Sweden",
+    "type": "Remote",
+    "description": "Klarna is looking for a Backend Developer to help build payment infrastructure using .NET microservices. You will work with C#, SQL Server, RabbitMQ, and Azure. Fully remote position open to candidates based in Sweden.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "SQL Server",
+      "Microservices",
+      "RabbitMQ"
+    ],
+    "nice_to_have": ["Azure Service Bus", "Docker", "Kubernetes", "Clean Architecture"],
+    "experience_years": "2-5",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://klarna.com/careers/mock/007",
+    "posted_date": "2025-05-12"
+  },
+  {
+    "id": "job_008",
+    "title": "Unpaid Research Intern — NLP",
+    "company": "University Lab X",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "We offer an unpaid research internship in NLP for ambitious students. You will assist PhD researchers with data collection, annotation, and model evaluation tasks.",
+    "requirements": [
+      "Python",
+      "NLP",
+      "Research interest"
+    ],
+    "nice_to_have": ["PyTorch", "Hugging Face"],
+    "experience_years": "0-1",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://universitylab.se/mock/008",
+    "posted_date": "2025-05-11",
+    "compensation": "unpaid"
+  },
+  {
+    "id": "job_009",
+    "title": "Software Developer — Java/Python",
+    "company": "Stena Line",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "Stena Line is hiring a Software Developer for their digital transformation team. You will work on logistics and booking platforms using Python microservices, REST APIs, and SQL. Java experience is a plus. Team uses Agile and GitHub for version control.",
+    "requirements": [
+      "Python",
+      "REST APIs",
+      "SQL",
+      "Microservices",
+      "GitHub"
+    ],
+    "nice_to_have": ["Java", "Docker", "Azure", "Agile"],
+    "experience_years": "1-4",
+    "language_requirement": "Swedish or English",
+    "source": "mock",
+    "url": "https://stenaline.com/careers/mock/009",
+    "posted_date": "2025-05-10"
+  },
+  {
+    "id": "job_010",
+    "title": "LLMOps / AI Platform Engineer",
+    "company": "King (Game Studio)",
+    "location": "Stockholm, Sweden",
+    "type": "Hybrid",
+    "description": "King is expanding its AI platform team. Looking for an LLMOps / AI Platform Engineer to manage LLM deployment pipelines, fine-tuning workflows, and inference infrastructure on Azure. Experience with LangChain, RAG, and MLflow is ideal.",
+    "requirements": [
+      "Python",
+      "LLMOps",
+      "Azure",
+      "LangChain",
+      "MLOps"
+    ],
+    "nice_to_have": ["RAG", "Docker", "Kubernetes", "MLflow", "FastAPI"],
+    "experience_years": "1-3",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://king.com/careers/mock/010",
+    "posted_date": "2025-05-09"
+  }
+]

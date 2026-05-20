@@ -1,0 +1,108 @@
+2026-05-20 12:41:16,077 [INFO] daily_runner — ============================================================
+2026-05-20 12:41:16,077 [INFO] daily_runner — DAILY PIPELINE — 2026-05-20
+2026-05-20 12:41:16,078 [INFO] daily_runner — ============================================================
+2026-05-20 12:41:16,078 [INFO] daily_runner — 
+── STEP 1/7: Apify Collector ──
+2026-05-20 12:41:16,082 [INFO] apify_collector — ============================================================
+2026-05-20 12:41:16,082 [INFO] apify_collector — Apify Live Collector — Phase 4 starting
+2026-05-20 12:41:16,082 [WARNING] apify_collector — No Apify token configured.
+2026-05-20 12:41:16,083 [WARNING] apify_collector — Set apify.token in config/config.yaml to enable live collection.
+2026-05-20 12:41:16,083 [WARNING] apify_collector — Get your token at: https://console.apify.com/account/integrations
+2026-05-20 12:41:16,083 [INFO] daily_runner —   Apify skipped (no token) — using existing mock/local data
+2026-05-20 12:41:16,083 [INFO] daily_runner — 
+── STEP 2/7: Job Cleaner ──
+2026-05-20 12:41:16,087 [INFO] job_cleaner — ============================================================
+2026-05-20 12:41:16,087 [INFO] job_cleaner — Job Cleaner — Phase 2 starting
+2026-05-20 12:41:16,088 [INFO] job_cleaner —   Loaded 10 jobs from mock_jobs.json
+2026-05-20 12:41:16,089 [INFO] job_cleaner — Total raw jobs: 10
+2026-05-20 12:41:16,089 [INFO] job_cleaner —   ✓ CLEAN [job_001] Junior .NET Developer @ Volvo Cars
+2026-05-20 12:41:16,090 [INFO] job_cleaner —   ✓ CLEAN [job_002] AI Engineer (Junior) @ Chalmers Ventures
+2026-05-20 12:41:16,090 [INFO] job_cleaner —   ✓ CLEAN [job_003] Senior C# Backend Developer @ Ericsson
+2026-05-20 12:41:16,090 [INFO] job_cleaner —   ✓ CLEAN [job_004] Cloud Developer @ AFRY
+2026-05-20 12:41:16,090 [INFO] job_cleaner —   ✓ CLEAN [job_005] ML Engineer Intern @ Spotify
+2026-05-20 12:41:16,090 [INFO] job_cleaner —   IRRELEVANT [job_006] Retail Sales Associate @ H&M — Irrelevant title pattern: '\bretail\b'
+2026-05-20 12:41:16,090 [INFO] job_cleaner —   ✓ CLEAN [job_007] Backend Developer (.NET) @ Klarna
+2026-05-20 12:41:16,091 [INFO] job_cleaner —   UNPAID [job_008] Unpaid Research Intern — NLP @ University Lab X
+2026-05-20 12:41:16,091 [INFO] job_cleaner —   ✓ CLEAN [job_009] Software Developer — Java/Python @ Stena Line
+2026-05-20 12:41:16,091 [INFO] job_cleaner —   ✓ CLEAN [job_010] LLMOps / AI Platform Engineer @ King (Game Studio)
+2026-05-20 12:41:16,092 [INFO] job_cleaner — Clean: 8 | Rejected: 2
+2026-05-20 12:41:16,092 [INFO] job_cleaner — ============================================================
+2026-05-20 12:41:16,092 [INFO] daily_runner —   Clean: 8 | Rejected: 2
+2026-05-20 12:41:16,092 [INFO] daily_runner — 
+── STEP 3/7: Job Matcher ──
+2026-05-20 12:41:16,097 [INFO] job_matcher — ============================================================
+2026-05-20 12:41:16,097 [INFO] job_matcher — Job Matcher — Phase 1 starting
+2026-05-20 12:41:16,106 [INFO] job_matcher — Profile loaded. Skill set: 45 skills
+2026-05-20 12:41:16,106 [INFO] job_matcher — Loaded 10 jobs from data/raw/mock_jobs.json
+2026-05-20 12:41:16,106 [INFO] job_matcher —   ✓ [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   REJECTED [job_003] Senior C# Backend Developer @ Ericsson — Over-senior: found '8+ years' in description
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_004] Cloud Developer @ AFRY — Score: 95/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (EXCELLENT)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   REJECTED [job_006] Retail Sales Associate @ H&M — Irrelevant role: matched keyword 'retail'
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (HIGH)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   REJECTED [job_008] Unpaid Research Intern — NLP @ University Lab X — Unpaid position
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (HIGH)
+2026-05-20 12:41:16,107 [INFO] job_matcher —   ✓ [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (EXCELLENT)
+2026-05-20 12:41:16,108 [INFO] job_matcher — ------------------------------------------------------------
+2026-05-20 12:41:16,108 [INFO] job_matcher — SUMMARY: 10 jobs processed
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Excellent : 5
+2026-05-20 12:41:16,109 [INFO] job_matcher —   High      : 2
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Medium    : 0
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Rejected  : 3
+2026-05-20 12:41:16,109 [INFO] job_matcher —   Saved to  : data/scored/scored_jobs_2026-05-20.json
+2026-05-20 12:41:16,109 [INFO] job_matcher — ============================================================
+2026-05-20 12:41:16,110 [INFO] daily_runner —   Excellent: 5 | High: 2 | Medium: 0 | Rejected: 3
+2026-05-20 12:41:16,110 [INFO] daily_runner — 
+── STEP 4/7: CV Tailor ──
+2026-05-20 12:41:16,114 [INFO] cv_tailor — ============================================================
+2026-05-20 12:41:16,114 [INFO] cv_tailor — CV Tailor — Phase 3 starting
+2026-05-20 12:41:16,115 [INFO] cv_tailor — Base CV loaded: profile/base_cv.md
+2026-05-20 12:41:16,115 [INFO] cv_tailor — Loaded 7 scored jobs
+2026-05-20 12:41:16,115 [INFO] cv_tailor — Qualifying jobs (score >= 999): 0
+2026-05-20 12:41:16,115 [INFO] cv_tailor — 
+============================================================
+2026-05-20 12:41:16,115 [INFO] cv_tailor — CV Tailor complete: 0 generated, 0 errors
+2026-05-20 12:41:16,115 [INFO] cv_tailor — ============================================================
+2026-05-20 12:41:16,116 [INFO] daily_runner —   CVs generated: 0
+2026-05-20 12:41:16,116 [INFO] daily_runner — 
+── STEP 5/7: Tracker Updater ──
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_001] Junior .NET Developer @ Volvo Cars — Score: 96/100 (excellent)
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_002] AI Engineer (Junior) @ Chalmers Ventures — Score: 97/100 (excellent)
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_004] Cloud Developer @ AFRY — Score: 95/100 (excellent)
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_005] ML Engineer Intern @ Spotify — Score: 94/100 (excellent)
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_010] LLMOps / AI Platform Engineer @ King (Game Studio) — Score: 95/100 (excellent)
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_007] Backend Developer (.NET) @ Klarna — Score: 87/100 (high)
+2026-05-20 12:41:16,116 [INFO] tracker_updater —   Added [job_009] Software Developer — Java/Python @ Stena Line — Score: 89/100 (high)
+2026-05-20 12:41:16,117 [INFO] daily_runner —   Added: 7 | Protected: 0 | Refreshed: 0
+2026-05-20 12:41:16,117 [INFO] daily_runner — 
+── STEP 6/7: Obsidian Sync ──
+2026-05-20 12:41:16,121 [INFO] obsidian_sync — ============================================================
+2026-05-20 12:41:16,121 [INFO] obsidian_sync — Obsidian Sync — vault: ../MinaJobAgentVault
+2026-05-20 12:41:16,123 [INFO] obsidian_sync —   ✓ Job note: job_001_2026-05-20.md
+2026-05-20 12:41:16,123 [INFO] obsidian_sync —   ✓ Job note: job_002_2026-05-20.md
+2026-05-20 12:41:16,123 [INFO] obsidian_sync —   ✓ Job note: job_004_2026-05-20.md
+2026-05-20 12:41:16,124 [INFO] obsidian_sync —   ✓ Job note: job_005_2026-05-20.md
+2026-05-20 12:41:16,125 [INFO] obsidian_sync —   ✓ Job note: job_010_2026-05-20.md
+2026-05-20 12:41:16,125 [INFO] obsidian_sync —   ✓ Job note: job_007_2026-05-20.md
+2026-05-20 12:41:16,125 [INFO] obsidian_sync —   ✓ Job note: job_009_2026-05-20.md
+2026-05-20 12:41:16,126 [INFO] obsidian_sync —   ✓ Daily summary: Daily_Summary_2026-05-20.md
+2026-05-20 12:41:16,127 [INFO] obsidian_sync —   ✓ Tracker note updated
+2026-05-20 12:41:16,127 [INFO] obsidian_sync — Obsidian sync complete: 7 job notes, tracker updated
+2026-05-20 12:41:16,128 [INFO] obsidian_sync — ============================================================
+2026-05-20 12:41:16,128 [INFO] daily_runner —   Job notes: 7 | Tracker: ✓ | Summary: ✓
+2026-05-20 12:41:16,128 [INFO] daily_runner — 
+── STEP 7/7: Google Drive ──
+2026-05-20 12:41:16,132 [INFO] google_drive — ============================================================
+2026-05-20 12:41:16,132 [INFO] google_drive — Google Drive Sync — Phase 4 starting
+2026-05-20 12:41:16,132 [INFO] google_drive — Google Drive sync disabled. Set google_drive.enabled: true in config.yaml
+2026-05-20 12:41:16,132 [INFO] daily_runner —   Google Drive sync disabled (set google_drive.enabled: true to activate)
+2026-05-20 12:41:16,132 [INFO] daily_runner — 
+============================================================
+2026-05-20 12:41:16,132 [INFO] daily_runner — DAILY PIPELINE COMPLETE
+2026-05-20 12:41:16,132 [INFO] daily_runner —   Date         : 2026-05-20
+2026-05-20 12:41:16,132 [INFO] daily_runner —   Collected    : 0
+2026-05-20 12:41:16,133 [INFO] daily_runner —   Cleaned      : 8
+2026-05-20 12:41:16,133 [INFO] daily_runner —   Scored (kept): 7
+2026-05-20 12:41:16,133 [INFO] daily_runner —   CVs generated: 0
+2026-05-20 12:41:16,133 [INFO] daily_runner — ============================================================

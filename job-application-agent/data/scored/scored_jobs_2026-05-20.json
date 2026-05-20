@@ -1,0 +1,430 @@
+[
+  {
+    "id": "job_001",
+    "title": "Junior .NET Developer",
+    "company": "Volvo Cars",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "We are looking for a Junior .NET Developer to join our connected vehicles software team. You will build and maintain backend services using C# and ASP.NET Core, work with microservices architecture, and contribute to CI/CD pipelines using Azure DevOps. Experience with SQL Server and REST APIs is required.",
+    "requirements": [
+      "C#",
+      ".NET / ASP.NET Core",
+      "SQL Server",
+      "REST APIs",
+      "Microservices",
+      "Azure DevOps",
+      "Git"
+    ],
+    "nice_to_have": [
+      "Docker",
+      "RabbitMQ",
+      "Agile/Scrum"
+    ],
+    "experience_years": "1-3",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://careers.volvocars.com/mock/001",
+    "posted_date": "2025-05-18",
+    "match_score": 96,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 32,
+        "max": 35,
+        "detail": "Matched 7/7 required skills; nice-to-have matches: docker, rabbitmq"
+      },
+      "experience_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Junior to mid-level — strong fit"
+      },
+      "location_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Gothenburg — ideal location"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "English only — Mina qualifies"
+      },
+      "ai_cloud_bonus": {
+        "score": 9,
+        "max": 10,
+        "detail": "AI + Cloud role (1 AI, 2 cloud keywords)"
+      },
+      "career_value": {
+        "score": 5,
+        "max": 5,
+        "detail": "Top-tier company (Volvo Cars)"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "excellent"
+  },
+  {
+    "id": "job_002",
+    "title": "AI Engineer (Junior)",
+    "company": "Chalmers Ventures",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "Join a fast-growing AI startup incubated at Chalmers. We need a Junior AI Engineer to help build LLM-powered products. Responsibilities include RAG system development, prompt engineering, Python backend development, and working with vector databases. Prior experience with LangChain or similar frameworks is a strong plus.",
+    "requirements": [
+      "Python",
+      "LLM / Generative AI",
+      "RAG",
+      "LangChain",
+      "REST APIs"
+    ],
+    "nice_to_have": [
+      "Docker",
+      "Azure",
+      "FastAPI",
+      "ChromaDB"
+    ],
+    "experience_years": "0-2",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://chalmerventures.com/mock/002",
+    "posted_date": "2025-05-17",
+    "match_score": 97,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 32,
+        "max": 35,
+        "detail": "Matched 5/5 required skills; nice-to-have matches: docker, azure"
+      },
+      "experience_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Junior/intern level — perfect fit"
+      },
+      "location_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Gothenburg — ideal location"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "English only — Mina qualifies"
+      },
+      "ai_cloud_bonus": {
+        "score": 10,
+        "max": 10,
+        "detail": "Strong AI/ML alignment (4 AI keywords matched)"
+      },
+      "career_value": {
+        "score": 5,
+        "max": 5,
+        "detail": "Top-tier company (Chalmers Ventures)"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "excellent"
+  },
+  {
+    "id": "job_004",
+    "title": "Cloud Developer",
+    "company": "AFRY",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "AFRY is hiring a Cloud Developer to work on infrastructure and deployment pipelines for industrial clients. Key tools include Azure, Docker, Kubernetes, and CI/CD pipelines. You will collaborate with agile teams and help migrate on-prem systems to cloud-native architectures.",
+    "requirements": [
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "Python or C#"
+    ],
+    "nice_to_have": [
+      "Helm",
+      "Terraform",
+      "Agile",
+      "REST APIs"
+    ],
+    "experience_years": "1-4",
+    "language_requirement": "Swedish or English",
+    "source": "mock",
+    "url": "https://afry.com/careers/mock/004",
+    "posted_date": "2025-05-15",
+    "match_score": 95,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 33,
+        "max": 35,
+        "detail": "Matched 5/5 required skills; nice-to-have matches: helm, agile, rest apis"
+      },
+      "experience_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Junior to mid-level — strong fit"
+      },
+      "location_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Gothenburg — ideal location"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "Swedish or English — Mina qualifies (Swedish fluent)"
+      },
+      "ai_cloud_bonus": {
+        "score": 8,
+        "max": 10,
+        "detail": "Strong cloud alignment (5 cloud keywords)"
+      },
+      "career_value": {
+        "score": 4,
+        "max": 5,
+        "detail": "High growth-potential role title"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "excellent"
+  },
+  {
+    "id": "job_005",
+    "title": "ML Engineer Intern",
+    "company": "Spotify",
+    "location": "Stockholm, Sweden (Remote possible)",
+    "type": "Remote/Hybrid",
+    "description": "Spotify is looking for an ML Engineer Intern to join the recommendations team. You will work on model training pipelines, feature engineering, and experimenting with deep learning architectures. This is a paid internship for students currently enrolled in a relevant Master's or PhD program.",
+    "requirements": [
+      "Python",
+      "Machine Learning",
+      "PyTorch or TensorFlow",
+      "SQL"
+    ],
+    "nice_to_have": [
+      "MLOps",
+      "GCP",
+      "Recommendation Systems",
+      "A/B testing"
+    ],
+    "experience_years": "0-1 (student)",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://spotify.com/careers/mock/005",
+    "posted_date": "2025-05-14",
+    "match_score": 94,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 31,
+        "max": 35,
+        "detail": "Matched 4/4 required skills; nice-to-have matches: mlops"
+      },
+      "experience_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Junior/intern level — perfect fit"
+      },
+      "location_fit": {
+        "score": 18,
+        "max": 20,
+        "detail": "Remote within Sweden — great option"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "English only — Mina qualifies"
+      },
+      "ai_cloud_bonus": {
+        "score": 10,
+        "max": 10,
+        "detail": "Strong AI/ML alignment (3 AI keywords matched)"
+      },
+      "career_value": {
+        "score": 5,
+        "max": 5,
+        "detail": "Top-tier company (Spotify)"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "excellent"
+  },
+  {
+    "id": "job_010",
+    "title": "LLMOps / AI Platform Engineer",
+    "company": "King (Game Studio)",
+    "location": "Stockholm, Sweden",
+    "type": "Hybrid",
+    "description": "King is expanding its AI platform team. Looking for an LLMOps / AI Platform Engineer to manage LLM deployment pipelines, fine-tuning workflows, and inference infrastructure on Azure. Experience with LangChain, RAG, and MLflow is ideal.",
+    "requirements": [
+      "Python",
+      "LLMOps",
+      "Azure",
+      "LangChain",
+      "MLOps"
+    ],
+    "nice_to_have": [
+      "RAG",
+      "Docker",
+      "Kubernetes",
+      "MLflow",
+      "FastAPI"
+    ],
+    "experience_years": "1-3",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://king.com/careers/mock/010",
+    "posted_date": "2025-05-09",
+    "match_score": 95,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 33,
+        "max": 35,
+        "detail": "Matched 5/5 required skills; nice-to-have matches: rag, docker, kubernetes"
+      },
+      "experience_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Junior to mid-level — strong fit"
+      },
+      "location_fit": {
+        "score": 17,
+        "max": 20,
+        "detail": "Hybrid in Sweden — good fit"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "English only — Mina qualifies"
+      },
+      "ai_cloud_bonus": {
+        "score": 10,
+        "max": 10,
+        "detail": "Strong AI/ML alignment (6 AI keywords matched)"
+      },
+      "career_value": {
+        "score": 5,
+        "max": 5,
+        "detail": "Top-tier company (King (Game Studio))"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "excellent"
+  },
+  {
+    "id": "job_007",
+    "title": "Backend Developer (.NET)",
+    "company": "Klarna",
+    "location": "Stockholm, Sweden",
+    "type": "Remote",
+    "description": "Klarna is looking for a Backend Developer to help build payment infrastructure using .NET microservices. You will work with C#, SQL Server, RabbitMQ, and Azure. Fully remote position open to candidates based in Sweden.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "SQL Server",
+      "Microservices",
+      "RabbitMQ"
+    ],
+    "nice_to_have": [
+      "Azure Service Bus",
+      "Docker",
+      "Kubernetes",
+      "Clean Architecture"
+    ],
+    "experience_years": "2-5",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://klarna.com/careers/mock/007",
+    "posted_date": "2025-05-12",
+    "match_score": 87,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 33,
+        "max": 35,
+        "detail": "Matched 5/5 required skills; nice-to-have matches: docker, kubernetes, clean architecture"
+      },
+      "experience_fit": {
+        "score": 16,
+        "max": 20,
+        "detail": "Mid-level — good fit with Mina's background"
+      },
+      "location_fit": {
+        "score": 18,
+        "max": 20,
+        "detail": "Remote within Sweden — great option"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "English only — Mina qualifies"
+      },
+      "ai_cloud_bonus": {
+        "score": 5,
+        "max": 10,
+        "detail": "Some AI/cloud relevance"
+      },
+      "career_value": {
+        "score": 5,
+        "max": 5,
+        "detail": "Top-tier company (Klarna)"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "high"
+  },
+  {
+    "id": "job_009",
+    "title": "Software Developer — Java/Python",
+    "company": "Stena Line",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "Stena Line is hiring a Software Developer for their digital transformation team. You will work on logistics and booking platforms using Python microservices, REST APIs, and SQL. Java experience is a plus. Team uses Agile and GitHub for version control.",
+    "requirements": [
+      "Python",
+      "REST APIs",
+      "SQL",
+      "Microservices",
+      "GitHub"
+    ],
+    "nice_to_have": [
+      "Java",
+      "Docker",
+      "Azure",
+      "Agile"
+    ],
+    "experience_years": "1-4",
+    "language_requirement": "Swedish or English",
+    "source": "mock",
+    "url": "https://stenaline.com/careers/mock/009",
+    "posted_date": "2025-05-10",
+    "match_score": 89,
+    "score_breakdown": {
+      "skill_match": {
+        "score": 34,
+        "max": 35,
+        "detail": "Matched 5/5 required skills; nice-to-have matches: java, docker, azure"
+      },
+      "experience_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Junior to mid-level — strong fit"
+      },
+      "location_fit": {
+        "score": 20,
+        "max": 20,
+        "detail": "Gothenburg — ideal location"
+      },
+      "language_fit": {
+        "score": 10,
+        "max": 10,
+        "detail": "Swedish or English — Mina qualifies (Swedish fluent)"
+      },
+      "ai_cloud_bonus": {
+        "score": 2,
+        "max": 10,
+        "detail": "Low AI/cloud relevance"
+      },
+      "career_value": {
+        "score": 3,
+        "max": 5,
+        "detail": "Standard career value"
+      }
+    },
+    "scored_date": "2026-05-20",
+    "priority": "high"
+  }
+]

@@ -1,0 +1,8 @@
+job_id,title,company,location,score,priority,status,cv_generated,date_added,date_applied,notes
+job_002,AI Engineer (Junior),Chalmers Ventures,"Gothenburg, Sweden",97,excellent,new,no,2026-05-20,,
+job_001,Junior .NET Developer,Volvo Cars,"Gothenburg, Sweden",96,excellent,new,no,2026-05-20,,
+job_004,Cloud Developer,AFRY,"Gothenburg, Sweden",95,excellent,new,no,2026-05-20,,
+job_010,LLMOps / AI Platform Engineer,King (Game Studio),"Stockholm, Sweden",95,excellent,new,no,2026-05-20,,
+job_005,ML Engineer Intern,Spotify,"Stockholm, Sweden (Remote possible)",94,excellent,new,no,2026-05-20,,
+job_009,Software Developer — Java/Python,Stena Line,"Gothenburg, Sweden",89,high,new,no,2026-05-20,,
+job_007,Backend Developer (.NET),Klarna,"Stockholm, Sweden",87,high,new,no,2026-05-20,,

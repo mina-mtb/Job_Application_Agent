@@ -1,0 +1,70 @@
+[
+  {
+    "id": "job_003",
+    "title": "Senior C# Backend Developer",
+    "company": "Ericsson",
+    "location": "Gothenburg, Sweden",
+    "type": "Hybrid",
+    "description": "Experienced Senior C# Backend Developer with 8+ years needed to lead backend architecture for 5G software systems. Must have deep expertise in distributed systems, performance tuning, and mentoring junior developers.",
+    "requirements": [
+      "C#",
+      ".NET",
+      "8+ years experience",
+      "Distributed Systems",
+      "Team Lead"
+    ],
+    "nice_to_have": [
+      "Azure",
+      "Kubernetes"
+    ],
+    "experience_years": "8+",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://ericsson.com/careers/mock/003",
+    "posted_date": "2025-05-16",
+    "rejection_reason": "Over-senior: found '8+ years' in description"
+  },
+  {
+    "id": "job_006",
+    "title": "Retail Sales Associate",
+    "company": "H&M",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "H&M is hiring part-time retail associates for the city center store. Tasks include customer service, stock replenishment, and point-of-sale operations.",
+    "requirements": [
+      "Customer service",
+      "Swedish (native)"
+    ],
+    "nice_to_have": [],
+    "experience_years": "0-2",
+    "language_requirement": "Swedish (native required)",
+    "source": "mock",
+    "url": "https://hm.com/careers/mock/006",
+    "posted_date": "2025-05-13",
+    "rejection_reason": "Irrelevant role: matched keyword 'retail'"
+  },
+  {
+    "id": "job_008",
+    "title": "Unpaid Research Intern — NLP",
+    "company": "University Lab X",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "We offer an unpaid research internship in NLP for ambitious students. You will assist PhD researchers with data collection, annotation, and model evaluation tasks.",
+    "requirements": [
+      "Python",
+      "NLP",
+      "Research interest"
+    ],
+    "nice_to_have": [
+      "PyTorch",
+      "Hugging Face"
+    ],
+    "experience_years": "0-1",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://universitylab.se/mock/008",
+    "posted_date": "2025-05-11",
+    "compensation": "unpaid",
+    "rejection_reason": "Unpaid position"
+  }
+]

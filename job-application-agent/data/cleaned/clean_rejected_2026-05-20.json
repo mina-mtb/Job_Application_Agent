@@ -1,0 +1,46 @@
+[
+  {
+    "id": "job_006",
+    "title": "Retail Sales Associate",
+    "company": "H&M",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "H&M is hiring part-time retail associates for the city center store. Tasks include customer service, stock replenishment, and point-of-sale operations.",
+    "requirements": [
+      "Customer service",
+      "Swedish (native)"
+    ],
+    "nice_to_have": [],
+    "experience_years": "0-2",
+    "language_requirement": "Swedish (native required)",
+    "source": "mock",
+    "url": "https://hm.com/careers/mock/006",
+    "posted_date": "2025-05-13",
+    "compensation": "paid",
+    "clean_rejection_reason": "Irrelevant title pattern: '\\bretail\\b'"
+  },
+  {
+    "id": "job_008",
+    "title": "Unpaid Research Intern — NLP",
+    "company": "University Lab X",
+    "location": "Gothenburg, Sweden",
+    "type": "On-site",
+    "description": "We offer an unpaid research internship in NLP for ambitious students. You will assist PhD researchers with data collection, annotation, and model evaluation tasks.",
+    "requirements": [
+      "Python",
+      "NLP",
+      "Research interest"
+    ],
+    "nice_to_have": [
+      "PyTorch",
+      "Hugging Face"
+    ],
+    "experience_years": "0-1",
+    "language_requirement": "English",
+    "source": "mock",
+    "url": "https://universitylab.se/mock/008",
+    "posted_date": "2025-05-11",
+    "compensation": "unpaid",
+    "clean_rejection_reason": "Unpaid position"
+  }
+]

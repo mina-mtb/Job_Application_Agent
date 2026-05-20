@@ -1,0 +1,112 @@
+# =============================================================
+# JOB APPLICATION AGENT — PIPELINE CONFIGURATION
+# =============================================================
+
+pipeline:
+  name: Mina Job Application Agent
+  version: "1.0.0-phase1"
+
+# --- PATHS ---
+paths:
+  profile: profile/mina_profile.yaml
+  base_cv: profile/base_cv.md
+  raw_jobs: data/raw/
+  cleaned_jobs: data/cleaned/
+  scored_jobs: data/scored/
+  tailored_cvs: cvs/tailored/
+  outputs: outputs/
+  logs: logs/
+  tracker: outputs/tracker.csv
+
+# --- SCORING ---
+score_thresholds:
+  reject: 60        # < 60 → reject
+  medium_priority: 75  # 60–74 → medium
+  high_priority: 85    # 75–89 → high
+  excellent: 90        # 90+ → excellent
+
+# --- REJECTION FILTERS (pre-scoring hard filters) ---
+rejection_filters:
+  min_experience_years: null  # null = no minimum
+  max_experience_years: 7     # Reject if "8+ years" is required
+  unpaid: true                # Reject unpaid positions
+  irrelevant_keywords:        # Reject jobs containing these (case-insensitive)
+    - "native Swedish only"
+    - "retail"
+    - "sales associate"
+    - "customer service representative"
+    - "cashier"
+    - "warehouse worker"
+    - "truck driver"
+    - "nurse"
+    - "teacher"
+  required_experience_flags:
+    - "8+ years"
+    - "10+ years"
+    - "senior 8"
+    - "lead with 8"
+
+# --- LOGGING ---
+logging:
+  level: INFO
+  log_to_file: true
+  log_file: logs/pipeline.log
+
+# --- MOCK MODE ---
+use_mock_data: true
+mock_jobs_file: data/raw/mock_jobs.json
+
+# --- APIFY (Phase 2 — set token when ready for live data) ---
+apify:
+  token: "YOUR_APIFY_TOKEN_HERE"
+  actor_id: "bebity/linkedin-jobs-scraper"
+  search_terms:
+    - "Backend Developer Gothenburg"
+    - ".NET Developer Sweden"
+    - "Junior AI Engineer Sweden"
+    - "Cloud Developer Gothenburg"
+    - "ML Engineer Intern Sweden"
+  location: "Gothenburg, Sweden"
+  max_results_per_search: 25
+
+# --- OBSIDIAN VAULT ---
+obsidian_vault: "../MinaJobAgentVault"
+
+# --- PIPELINE PHASES (enable/disable modules) ---
+phases:
+  collect: true
+  clean: true
+  match: true
+  cv_tailor: true     # Phase 3 — not yet active
+  tracker_update: true
+
+# --- PIPELINE VERSION ---
+pipeline:
+  name: Mina Job Application Agent
+  version: "2.0.0-phase2"
+
+# --- GOOGLE DRIVE (Phase 4) ---
+google_drive:
+  enabled: false              # true کن وقتی credentials.json رو داری
+  folder_name: "Mina Job Applications"
+  sync_cvs: true
+  sync_tracker: true
+  sync_daily_summary: true
+  # Setup: python integrations/google_drive.py --auth
+
+# --- NOTIFICATIONS (Phase 4) ---
+notifications:
+  enabled: false
+  # email:
+  #   smtp_host: smtp.gmail.com
+  #   smtp_port: 587
+  #   sender: your@gmail.com
+  #   recipient: mina_tb@outlook.com
+  #   app_password: YOUR_APP_PASSWORD
+
+# --- SCHEDULER ---
+scheduler:
+  run_time: "08:00"           # هر روز ساعت 8 صبح
+  max_cvs_per_run: 5          # حداکثر 5 CV در هر اجرا
+  min_cv_score: 85            # فقط jobهای بالای 85
+  force_refresh_apify: false  # اگه true باشه هر روز دوباره fetch می‌کنه

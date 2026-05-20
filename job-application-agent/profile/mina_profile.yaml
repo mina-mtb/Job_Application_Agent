@@ -1,0 +1,164 @@
+# =============================================================
+# MINA TAHMASEBI — CANDIDATE PROFILE
+# Source: CV (verified, do not fabricate beyond this)
+# =============================================================
+
+personal:
+  name: Mina Tahmasebi
+  title: Junior Software Developer and AI Engineer
+  location: Gothenburg, Sweden
+  email: mina_tb@outlook.com
+  linkedin: mina-tahmasebi
+  github: mina-mtb
+  kaggle: minatahmasebi
+
+# --- SKILLS (only what is verified in the CV) ---
+skills:
+  ai_ml:
+    - Generative AI
+    - CNNs
+    - LLM-powered services
+    - PyTorch
+    - TensorFlow
+    - Interpretable ML (XAI, SHAP, LIME)
+    - Neural Networks
+    - RAG
+    - LangChain
+    - Machine Learning
+    - Deep Learning
+
+  cloud_devops:
+    - Azure (Entra ID, Service Bus)
+    - AWS
+    - Google Cloud
+    - Docker
+    - Kubernetes
+    - Helm
+    - DevOps
+    - MLOps
+    - LLMOps
+    - CI/CD
+    - GitHub
+
+  backend_architecture:
+    - C#
+    - Java
+    - .NET / ASP.NET Core
+    - REST APIs
+    - Entity Framework
+    - SQL Server
+    - Microservices
+    - RabbitMQ
+    - Clean Architecture
+    - Agile / Scrum
+
+  data_tools:
+    - Power Apps
+    - Power Automate
+    - Power BI
+    - Dataverse
+
+  languages_programming:
+    - Python
+    - C#
+    - Java
+    - SQL
+
+# --- WORK EXPERIENCE (real, verified) ---
+experience:
+  - company: AstraZeneca
+    role: Power Platform Assistant / Junior Power Platform Expert
+    period: Jan 2025 – Jun 2025
+    highlights:
+      - Power Apps, Power Automate, Dataverse, Power BI
+      - Business process automation and low-code solutions
+
+  - company: Star Republic AB (SQLI)
+    role: System Developer
+    period: Jan 2022 – Apr 2022
+    highlights:
+      - InRiver PIM system, large-scale enterprise integrations
+      - Azure Service Bus, e-commerce integrations
+
+  - company: 3bits Consulting AB
+    role: Software Developer
+    period: 2021 – 2022
+    highlights:
+      - Warehouse Management System (100+ microservices)
+      - RabbitMQ, ADO.NET, SOAP
+
+  - company: Sigma Technology Group
+    role: Software Developer
+    period: 2020 – 2021
+    highlights:
+      - RESTful APIs using .NET, SQL Server, Entity Framework
+      - Backend services for mobile application
+
+# --- EDUCATION ---
+education:
+  - degree: M.Sc. in Information and Communication Technology
+    institution: Chalmers University of Technology
+    period: 2025 – ongoing
+    focus: Machine Learning, Deep Learning, Agentic Systems, LLM-powered services
+
+  - degree: Higher Vocational Diploma in Cloud Development
+    institution: Yrkeshögskolan Campus Mölndal
+    period: 2023 – 2025
+
+  - degree: Higher Vocational Diploma in Object-Oriented System Development
+    institution: NBI Handelsakademin
+    period: 2019 – 2021
+
+  - degree: Bachelor's in Software Engineering and Computer Science
+    institution: Azad University
+    period: 2000 – 2007
+
+# --- LANGUAGES ---
+languages:
+  - language: Swedish
+    level: Fluent
+  - language: Persian
+    level: Native
+  - language: English
+    level: Intermediate
+
+# --- JOB PREFERENCES ---
+preferences:
+  target_roles:
+    - Backend Developer
+    - .NET Developer
+    - C# Developer
+    - Junior AI Engineer
+    - AI Developer
+    - Cloud Developer
+    - ML Engineer (Intern/Junior)
+    - Software Developer
+
+  locations:
+    - Gothenburg, Sweden
+    - Sweden (any city)
+    - Remote
+    - Hybrid
+
+  avoid:
+    - Senior roles requiring 8+ years experience
+    - Unpaid internships
+    - Jobs requiring native-level Swedish exclusively
+    - Non-software / irrelevant roles
+    - Roles requiring 5+ years of specialized AI experience
+
+# --- SCORING WEIGHTS ---
+# Used by job_matcher.py
+scoring_weights:
+  skill_match: 35        # How well job skills match Mina's skills
+  experience_fit: 20     # Is the seniority level appropriate?
+  location_fit: 20       # Gothenburg / Sweden / Remote / Hybrid
+  language_fit: 10       # Swedish fluency is a bonus; English-only is OK
+  ai_cloud_relevance: 10 # Extra weight for AI/ML/Cloud roles (career goal)
+  career_value: 5        # Growth potential, company quality
+
+score_thresholds:
+  reject: 60
+  medium_priority: 75
+  high_priority: 85
+  excellent: 90

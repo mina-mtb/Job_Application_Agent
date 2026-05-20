@@ -1,0 +1,18 @@
+{
+  "date": "2026-05-20",
+  "timestamp": "2026-05-20T12:41:16.133360",
+  "status": "success",
+  "summary": {
+    "date": "2026-05-20",
+    "collected": 0,
+    "cleaned": 8,
+    "rejected_clean": 2,
+    "scored": 7,
+    "excellent": 5,
+    "high": 2,
+    "medium": 0,
+    "rejected_score": 3,
+    "cvs_generated": 0,
+    "errors": []
+  }
+}
