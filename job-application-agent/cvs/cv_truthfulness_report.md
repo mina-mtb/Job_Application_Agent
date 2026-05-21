@@ -141,3 +141,18 @@
 ### Job ID: cloud___devops_engin_consid_ab_006 (2026-05-20)
 - Truthful: True
 
+### Job ID: _net_developer_knowit_ab_002 (2026-05-20)
+- Truthful: True
+
+### Job ID: job_009 (2026-05-20)
+- Truthful: True
+
+### Job ID: junior__net_develope_volvo_cars_003 (2026-05-20)
+- Truthful: True
+
+### Job ID: job_007 (2026-05-20)
+- Truthful: True
+
+### Job ID: junior_backend_devel_dedicare_ab_000 (2026-05-20)
+- Truthful: True
+
