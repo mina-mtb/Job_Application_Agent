@@ -61,10 +61,8 @@ Navigate to the **Knowledge Base** tab in the Streamlit UI. Here, you can upload
 ## How to prepare profile/mina_base_cv.md
 For testing or manual execution:
 1. Copy `profile/mina_base_cv_template.md` to `profile/mina_base_cv.md`.
-2. Fill it locally with your real CV data, skills, and experience. Do not inflate titles.
+2. Fill it honestly with your real skills and experience. Do not inflate titles.
 3. The system will ingest this and use it as your immutable source of truth.
-
-**Important Security Warning:** Do not upload or commit the real `mina_base_cv.md` file. The `.gitignore` is configured to exclude it so that your personal data remains strictly local.
 
 ## How to add a manual job
 Go to the **Manual Entry** tab. Paste the Job Title, Company, Location, URL, and full text description. The pipeline will immediately process and evaluate it.

@@ -1,0 +1,10 @@
+pytest
+chromadb
+sentence-transformers
+pyyaml
+anthropic
+apify-client
+python-dotenv
+streamlit
+markdown
+pdfkit
