@@ -1,112 +1,107 @@
 # Personal AI Job Application Agent
 
-This repository contains a local MVP for an autonomous Personal AI Job Application Agent.
-
-## What the app does
-The agent collects job descriptions, evaluates them against your personalized CV and skills profile, and generates heavily grounded, tailored CVs. The human-in-the-loop dashboard allows you to review its decisions, preview the tailored CVs, and ultimately mark jobs as approved or applied. 
+## What this app does
+The Personal AI Job Application Agent helps you locally collect jobs, evaluate them against your real personalized CV and skills profile, and generate highly tailored CVs for the ones you approve. The human-in-the-loop dashboard ensures you maintain total control over your applications.
 
 ## Current MVP features
-- **Local Streamlit dashboard**: Human-in-the-loop UI to review matches and manage the pipeline.
-- **SQLite job database**: Reliable local storage for all jobs and their states.
-- **ChromaDB Knowledge Base**: Vector database for grounding your CV and ensuring factual generation.
-- **Manual job entry**: Paste in a job description and link to immediately score and evaluate it.
-- **Rule-based + mock AI scoring**: Two-stage pipeline (Rule-based filtering, followed by LLM-based scoring).
-- **Grounded CV tailoring**: LLMs rewrite only your Profile and Skills sections based heavily on your verified Knowledge Base.
-- **Markdown/HTML/PDF export**: Ready-to-send CV formats.
+- Streamlit dashboard for managing jobs visually
+- Manual job entry with instant AI scoring
+- SQLite job database for safe, resilient state storage
+- ChromaDB knowledge base to securely hold your CV facts
+- Local MockProvider for token-free offline testing
+- Rule-based filtering to instantly discard unsuitable roles
+- RAG-based scoring and reasoning tailored to your profile
+- Grounded CV generation that preserves your baseline truth
+- Markdown/HTML/PDF CV export capabilities
+- Windows setup and launcher scripts (`setup_project.bat`, `start_app.bat`)
 
-## Safety design
-This agent is built with strict anti-hallucination guardrails:
-- **Important rule: only Profile and Skills are tailored.** The AI is forbidden from fabricating facts.
-- **Important rule: Experience and Education are copied verbatim.** Your work history and educational timeline are structurally locked and perfectly preserved from your source CV.
+## Important safety rules
+- **The app only tailors Profile and Skills.**
+- **Experience and Education are copied verbatim.**
+- The app must not invent work history, education, dates, employers, or skills.
+- The real personal CV file `profile/mina_base_cv.md` is intentionally not committed to GitHub.
 
-## Project structure
-```
-job-application-agent/
-│
-├── app.py                     # Streamlit UI dashboard
-├── core/                      # Pipeline, Knowledge Base, Job Matcher, and CV Tailor logic
-├── database/                  # SQLite DB manager
-├── integrations/              # External API clients (e.g., Apify)
-├── knowledge_base/            # ChromaDB cache and raw uploaded source files
-├── llm/                       # Provider Factory (MockProvider / ClaudeProvider)
-├── profile/                   # Your baseline CV files and profile definitions
-├── tests/                     # 44 passing pytest modules ensuring total safety
-├── utils/                     # Document conversion (Markdown to HTML/PDF)
-├── config/                    # Configuration settings
-└── setup_project.bat / start_app.bat  # Windows launcher scripts
-```
+## First-time setup on Windows
+1. Download the ZIP from GitHub Release.
+2. Extract the ZIP.
+3. Open the extracted folder.
+4. Double-click `setup_project.bat`.
+5. Wait until dependencies install and tests finish.
+6. Double-click `start_app.bat`.
+7. Open `http://localhost:8501` in the browser if it does not open automatically.
 
-## Requirements
-- Python 3.10+
-- Windows OS (for the .bat launchers)
-- See `requirements.txt` for Python dependencies.
+## How to prepare your real profile file
+1. Go to the `profile` folder.
+2. Copy `mina_base_cv_template.md`.
+3. Rename the copy to `mina_base_cv.md`.
+4. Fill it with real professional data.
+5. Do not upload private medical/family/sensitive data.
+6. Keep Experience and Education accurate because they are copied verbatim.
+7. Upload the file in the Knowledge Base tab or place it locally.
 
-## Windows setup instructions
-1. Download the release or clone the repository.
-2. Run `setup_project.bat` to automatically build your virtual environment and install all dependencies.
-3. Once the setup script succeeds, run `start_app.bat` to launch the dashboard.
-
-## How to run setup_project.bat
-Open a command prompt or double-click `setup_project.bat` from your file explorer. It will install packages and run the local test suite to guarantee everything works.
-
-## How to run start_app.bat
-Double-click `start_app.bat`. It will boot the Streamlit server and automatically keep the console open if errors occur.
-
-## How to open the app at http://localhost:8501
-Once `start_app.bat` runs, your default browser should automatically open `http://localhost:8501`. If it doesn't, manually type the address into your browser.
-
-## How to upload Knowledge Base files
-Navigate to the **Knowledge Base** tab in the Streamlit UI. Here, you can upload Markdown or text files describing your skills, projects, and work history. The agent uses this strictly to ground its writing.
-
-## How to prepare profile/mina_base_cv.md
-For testing or manual execution:
-1. Copy `profile/mina_base_cv_template.md` to `profile/mina_base_cv.md`.
-2. Fill it honestly with your real skills and experience. Do not inflate titles.
-3. The system will ingest this and use it as your immutable source of truth.
+## How to use the Dashboard
+- **View jobs**: See all imported jobs sorted in a card/table view.
+- **Filter**: Filter by status, score, location, or keyword.
+- **Score New Jobs**: Click the "Run Daily Job Matching" or "Score New Jobs" button to run the pipeline on `new` jobs.
+- **Review**: Review the calculated score, reasons for match, and weaknesses/risks.
+- **Generate CV**: Generate your tailored CV files for `needs_review` jobs.
+- **Preview CV**: Read the generated CV directly in the app.
+- **Approve**: Mark the tailored CV as verified.
+- **Mark Applied**: Log the application as complete.
+- **Reject / Not Suitable**: Discard jobs you do not want to pursue.
+- **Add Notes**: Attach personal notes to any job.
 
 ## How to add a manual job
-Go to the **Manual Entry** tab. Paste the Job Title, Company, Location, URL, and full text description. The pipeline will immediately process and evaluate it.
+1. Open the **Manual Entry** tab.
+2. Fill the title, company, location, and URL if available.
+3. Paste the full job description.
+4. URL alone is not enough unless scraping is enabled.
+5. Click **Process Manual Job**.
+6. Generate a CV if the job passes the filters and becomes `needs_review`.
 
-## How to score new jobs
-From the **Dashboard** tab, you can click "Run Daily Job Matching" or "Score New Jobs" to process anything sitting in the `new` status through Stage 1 and Stage 2 matching.
+## How to upload Knowledge Base files
+- Use `.md` or `.txt` files first.
+- Upload your CV/profile source files here to ground the AI.
+- Template files should not be used as evidence.
+- Do not upload private sensitive data unless it is absolutely necessary and safe for your CV generation.
 
-## How to generate a tailored CV
-For any job sitting in `needs_review` or `approved` status, click **Generate CV** from the Dashboard. The AI will output a targeted Markdown, HTML, and PDF file.
-
-## How to preview and approve a CV
-Click **Preview CV** on the Dashboard for any generated job to read the tailored outputs. You can click **Approve** to bump its status to `approved`.
-
-## How to mark jobs as applied/rejected/not suitable
-Use the corresponding action buttons next to each job on the Dashboard. Marking a job as `rejected` or `not_suitable` ensures the pipeline never re-evaluates it. Marking it as `applied` completes the workflow for that job.
-
-## Explanation of job statuses
-- `new`: Job collected, pending evaluation.
-- `needs_review`: Passed AI scoring, ready for human evaluation or CV generation.
+## Job status meanings
+- `new`: Recently imported, pending matching score.
+- `needs_review`: Passed matching, ready for CV generation or review.
 - `cv_generated`: Tailored CV was created.
-- `approved`: Human verified the CV and job.
-- `applied`: Application officially submitted.
-- `rejected`: Did not pass Rule-based/Stage 1 filtering.
-- `not_suitable`: Human explicitly marked it as a bad fit.
-- `duplicate`: Already exists in the database.
+- `approved`: You approved the CV visually.
+- `applied`: You submitted the application.
+- `rejected`: The AI discarded the job during matching.
+- `not_suitable`: You manually marked it as a bad fit.
+- `duplicate`: Ignored because it already existed.
 - `failed`: An error occurred during matching or generation.
 
-## How to run tests manually
-Activate your `.venv` and run:
-`python -m pytest tests/ -v`
+## How to run tests
+Open a terminal in the project folder and run:
+`.\.venv\Scripts\python.exe -m pytest tests/ -v`
 
-## How to switch from MockProvider to Claude later
-Currently, the pipeline uses `MockProvider` to avoid spending API tokens. To switch, set `ANTHROPIC_API_KEY` in your `.env` file, and update `config/config.yaml` to point the `llm_provider` parameter to `claude`.
+## How to switch to Claude later
+- Create `.env` from `.env.example`.
+- Add `ANTHROPIC_API_KEY` locally only.
+- Change `active_provider` (or `llm_provider`) from `mock` to `claude` in `config/config.yaml`.
+- Never commit the `.env` file.
 
 ## How to add Apify later
-Fill your `APIFY_TOKEN` inside the `.env` file and use `JobCollector` in production mode to scrape LinkedIn/Indeed listings automatically.
+- Add `APIFY_TOKEN` to `.env` locally.
+- Keep the token out of GitHub.
+- Real Apify scraping is not fully validated in this MVP release yet.
 
 ## Known limitations
-- PDF export gracefully skips if `pdfkit`/`wkhtmltopdf` are missing on the host OS.
-- Only manual job entry is completely verified in this release.
+- Not a one-click EXE installer yet.
+- Claude production mode not fully validated yet.
+- Apify LinkedIn scraping not fully validated yet.
+- Canva automation not included yet.
+- Outlook/email automation not included yet.
+- Human review is still required before applying.
 
 ## Troubleshooting
-- If the Streamlit UI crashes, verify that `setup_project.bat` created the `.venv` correctly and that `jobs.db` isn't locked.
-- If CVs fail to generate, ensure your Knowledge Base contains the `mina_base_cv.md` file.
-
-## Privacy and local-first note
-All matching logic, vector databases, and job history are contained strictly inside your local machine. No data is sent to external APIs when running with `MockProvider`.
+- If `setup_project.bat` fails, check your Python installation.
+- If `start_app.bat` says `.venv` is missing, run `setup_project.bat` first.
+- If the browser does not open, manually go to `http://localhost:8501`.
+- If the CV does not generate, check that `profile/mina_base_cv.md` exists and the Knowledge Base has been uploaded.
+- If no jobs have scores, click **Score New Jobs**.

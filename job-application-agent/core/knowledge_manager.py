@@ -65,12 +65,22 @@ class KnowledgeManager:
             print(f"File {file_path} does not exist.")
             return False
             
-        if path.suffix.lower() not in ['.txt', '.md']:
-            print(f"Unsupported file type: {path.suffix}. Only .txt and .md are supported.")
+        if path.suffix.lower() not in ['.txt', '.md', '.pdf']:
+            print(f"Unsupported file type: {path.suffix}. Only .txt, .md, and .pdf are supported.")
             return False
 
-        with open(path, 'r', encoding='utf-8') as f:
-            text = f.read()
+        if path.suffix.lower() == '.pdf':
+            try:
+                import pypdf
+                with open(path, 'rb') as f:
+                    reader = pypdf.PdfReader(f)
+                    text = "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
+            except Exception as e:
+                print(f"Failed to read PDF: {e}")
+                return False
+        else:
+            with open(path, 'r', encoding='utf-8') as f:
+                text = f.read()
 
         # Check for duplicates using file hash
         file_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
@@ -129,3 +139,34 @@ class KnowledgeManager:
                 })
                 
         return formatted_results
+
+    def delete_source(self, filename: str) -> bool:
+        """Delete a source file from disk and its embeddings from the knowledge base."""
+        path = self.processed_dir / filename
+        if not path.exists():
+            return False
+            
+        # Read file to compute hash so we can delete its embeddings
+        try:
+            if path.suffix.lower() == '.pdf':
+                import pypdf
+                with open(path, 'rb') as f:
+                    reader = pypdf.PdfReader(f)
+                    text = "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
+            else:
+                with open(path, 'r', encoding='utf-8') as f:
+                    text = f.read()
+                    
+            file_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
+            self.collection.delete(where={"file_hash": file_hash})
+        except Exception as e:
+            print(f"Error removing embeddings for {filename}: {e}")
+            
+        # Delete the physical file
+        try:
+            path.unlink(missing_ok=True)
+        except Exception as e:
+            print(f"Error deleting file {filename}: {e}")
+            return False
+            
+        return True

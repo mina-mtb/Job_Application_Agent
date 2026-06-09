@@ -118,9 +118,10 @@ def test_dashboard_run_daily_matching_updates_new_jobs(test_setup):
     db.insert_job({"job_id": "j1", "job_link": "l1", "title": "Dev in Gothenburg", "description": "Python", "location": "Gothenburg"})
     db.insert_job({"job_id": "j2", "job_link": "l2", "title": "Unpaid Internship in Gothenburg", "description": "Intern", "location": "Gothenburg"})
     
-    count = run_daily_matching(db, matcher)
-    assert count == 2
-    
+    stats = run_daily_matching(db, matcher)
+    assert stats['processed'] == 2
+    assert stats['suitable'] == 1
+    assert stats['rejected'] == 1
     j1 = db.get_job_by_link("l1")
     assert j1['status'] == 'needs_review'
     assert j1['suitability_score'] is not None

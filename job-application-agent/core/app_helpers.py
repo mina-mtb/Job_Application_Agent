@@ -69,40 +69,60 @@ def process_manual_entry(db: DBManager, matcher: JobMatcher, description: str, j
     )
     return True, f"Job processed successfully. Status: {result2.get('status', 'needs_review')}"
 
-def run_daily_matching(db: DBManager, matcher: JobMatcher) -> int:
+def run_daily_matching(db: DBManager, matcher: JobMatcher) -> dict:
     jobs = db.execute_query("SELECT * FROM jobs WHERE status = 'new'")
-    count = 0
+    
+    stats = {
+        "processed": 0,
+        "duplicates": 0,  # Currently not tracked as insert handles duplicates before this
+        "suitable": 0,
+        "rejected": 0,
+        "cv_generated": 0,
+        "errors": 0
+    }
+    
     for job in jobs:
-        stage1_passed = False
-        result1 = matcher.evaluate_stage1(dict(job))
-        
-        if result1.get('status') == 'not_suitable':
-            db.execute_query("UPDATE jobs SET status = 'not_suitable', weaknesses_or_risks = ? WHERE job_id = ?", (str(result1.get('weaknesses_or_risks', [])), job['job_id']))
-        else:
-            result2 = matcher.evaluate_stage2(dict(job))
-            db.execute_query(
-                """UPDATE jobs SET 
-                   suitability_score = ?, suitability_category = ?, 
-                   reasons_for_match = ?, weaknesses_or_risks = ?, 
-                   status = ? 
-                   WHERE job_id = ?""",
-                (
-                    result2.get('suitability_score'),
-                    result2.get('suitability_category'),
-                    str(result2.get('reasons_for_match', [])),
-                    str(result2.get('weaknesses_or_risks', [])),
-                    result2.get('status', 'needs_review'),
-                    job['job_id']
+        try:
+            stats["processed"] += 1
+            result1 = matcher.evaluate_stage1(dict(job))
+            
+            if result1.get('status') == 'not_suitable':
+                db.execute_query("UPDATE jobs SET status = 'not_suitable', weaknesses_or_risks = ? WHERE job_id = ?", (str(result1.get('weaknesses_or_risks', [])), job['job_id']))
+                stats["rejected"] += 1
+            else:
+                result2 = matcher.evaluate_stage2(dict(job))
+                status = result2.get('status', 'needs_review')
+                if status in ['needs_review', 'approved']:
+                    stats["suitable"] += 1
+                else:
+                    stats["rejected"] += 1
+                    
+                db.execute_query(
+                    """UPDATE jobs SET 
+                       suitability_score = ?, suitability_category = ?, 
+                       reasons_for_match = ?, weaknesses_or_risks = ?, 
+                       status = ? 
+                       WHERE job_id = ?""",
+                    (
+                        result2.get('suitability_score'),
+                        result2.get('suitability_category'),
+                        str(result2.get('reasons_for_match', [])),
+                        str(result2.get('weaknesses_or_risks', [])),
+                        status,
+                        job['job_id']
+                    )
                 )
-            )
-        count += 1
-    return count
+        except Exception as e:
+            stats["errors"] += 1
+            db.execute_query("UPDATE jobs SET status = 'failed', weaknesses_or_risks = ? WHERE job_id = ?", (f"['Error: {str(e)}']", job['job_id']))
+            
+    return stats
 
 def handle_knowledge_upload(km: KnowledgeManager, file_path: str):
     if not os.path.exists(file_path):
         return False, "File does not exist."
-    if not (file_path.endswith('.md') or file_path.endswith('.txt')):
-        return False, "Only .md and .txt files are supported."
+    if not (file_path.lower().endswith('.md') or file_path.lower().endswith('.txt') or file_path.lower().endswith('.pdf')):
+        return False, "Only .md, .txt, and .pdf files are supported."
         
     try:
         km.add_source(file_path)

@@ -48,13 +48,15 @@ with tab1:
     col_a, col_b = st.columns([3, 1])
     with col_a:
         st.write("Manage your job pipeline below.")
+        st.caption("Flow: new ➔ needs_review ➔ cv_generated ➔ applied / rejected / not_suitable")
     with col_b:
         if st.button("Score New Jobs"):
             from core.app_helpers import run_daily_matching
             with st.spinner("Scoring new jobs..."):
-                count = run_daily_matching(db, matcher)
-                st.success(f"Scored {count} new jobs!")
-                st.rerun()
+                stats = run_daily_matching(db, matcher)
+                st.success(f"Processed: {stats['processed']} | Suitable: {stats['suitable']} | Rejected: {stats['rejected']} | Errors: {stats['errors']}")
+                # We do not rerun immediately so the user can read the success message.
+                # The user can refresh the page or it updates on next action.
                 
     # Filters
     col1, col2, col3 = st.columns(3)
@@ -103,9 +105,20 @@ with tab1:
                                 st.error("Failed to generate CV.")
             with c2:
                 if job.get('generated_cv_path') and os.path.exists(job['generated_cv_path']):
-                    if st.button("Preview CV", key=f"prev_{job['job_id']}"):
+                    if st.button("Preview Text CV", key=f"prev_{job['job_id']}"):
                         with open(job['generated_cv_path'], 'r', encoding='utf-8') as f:
                             st.markdown(f.read())
+                            
+                    pdf_path = job['generated_cv_path'].replace('.md', '.pdf')
+                    if os.path.exists(pdf_path):
+                        with open(pdf_path, "rb") as f:
+                            st.download_button(
+                                label="📥 Download PDF",
+                                data=f,
+                                file_name=os.path.basename(pdf_path),
+                                mime="application/pdf",
+                                key=f"dl_pdf_{job['job_id']}"
+                            )
             with c3:
                 if can_approve(job.get('status')):
                     if st.button("Approve", key=f"appr_{job['job_id']}"):
@@ -133,7 +146,7 @@ with tab1:
 
 with tab2:
     st.header("Knowledge Base Management")
-    uploaded_file = st.file_uploader("Upload Profile or Experience Document (.md, .txt)", type=['md', 'txt'])
+    uploaded_file = st.file_uploader("Upload Profile or Experience Document (.md, .txt, .pdf)", type=['md', 'txt', 'pdf'])
     
     if st.button("Add to Knowledge Base") and uploaded_file is not None:
         temp_dir = "temp_uploads"
@@ -148,31 +161,204 @@ with tab2:
         else:
             st.error(msg)
             
+    @st.dialog("Viewing/Editing Source", width="large")
+    def source_dialog(f, km):
+        path = km.processed_dir / f
+        if not path.exists():
+            st.error("File no longer exists.")
+            return
+
+        if f.endswith('.pdf'):
+            st.info("PDF files cannot be edited directly. Please delete and upload a new version.")
+            try:
+                import base64
+                with open(path, "rb") as f_obj:
+                    base64_pdf = base64.b64encode(f_obj.read()).decode('utf-8')
+                pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="600" type="application/pdf"></iframe>'
+                st.markdown(pdf_display, unsafe_allow_html=True)
+            except Exception as e:
+                st.error(f"Could not read PDF: {e}")
+                
+            if st.button("Close Viewer"):
+                st.rerun()
+        else:
+            with open(path, 'r', encoding='utf-8') as file_obj:
+                content = file_obj.read()
+                
+            tab_preview, tab_edit = st.tabs(["👁 Preview", "✏️ Edit Source"])
+            
+            with tab_preview:
+                st.markdown(content)
+                if st.button("Close Viewer"):
+                    st.rerun()
+                    
+            with tab_edit:
+                new_content = st.text_area("Content", content, height=400)
+                
+                c1, c2 = st.columns([2, 8])
+                with c1:
+                    if st.button("💾 Save Changes"):
+                        km.delete_source(f)
+                        
+                        temp_dir = "temp_uploads"
+                        os.makedirs(temp_dir, exist_ok=True)
+                        original_name = f.split('_')[0] + '.md' if '_' in f else f
+                        temp_path = os.path.join(temp_dir, original_name)
+                        with open(temp_path, "w", encoding="utf-8") as file_obj:
+                            file_obj.write(new_content)
+                            
+                        from pathlib import Path
+                        km.add_source(Path(temp_path))
+                        st.rerun()
+                with c2:
+                    if st.button("❌ Cancel"):
+                        st.rerun()
+
+    @st.dialog("Confirm Deletion")
+    def confirm_delete_dialog(f, km):
+        st.warning(f"Are you sure you want to delete **{f}**?")
+        st.write("This will permanently remove the file and its knowledge from the AI database.")
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("🚨 Yes, Delete It", use_container_width=True):
+                if km.delete_source(f):
+                    st.success(f"Deleted {f}")
+                    st.rerun()
+                else:
+                    st.error(f"Failed to delete {f}")
+        with c2:
+            if st.button("Cancel", use_container_width=True):
+                st.rerun()
+
     st.subheader("Current Processed Sources")
     processed_dir = km.processed_dir
     if os.path.exists(processed_dir):
         files = os.listdir(processed_dir)
         if files:
-            for f in files:
-                st.write(f"- {f}")
+            selected_file = st.radio("Select a source file to manage:", files, key="selected_source")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            col1, col2, col3 = st.columns([2, 2, 6])
+            with col1:
+                if st.button("👁 View/Edit Selected", use_container_width=True):
+                    source_dialog(selected_file, km)
+            with col2:
+                if st.button("🗑 Delete Selected", use_container_width=True):
+                    confirm_delete_dialog(selected_file, km)
+            st.markdown("---")
+            st.subheader("Default Base CV Template")
+            st.write("Choose which file should be used as the main template when generating your CV.")
+            
+            import json
+            from pathlib import Path
+            settings_path = Path("knowledge_base") / "settings.json"
+            settings = {}
+            if settings_path.exists():
+                try:
+                    with open(settings_path, "r", encoding="utf-8") as sf:
+                        settings = json.load(sf)
+                except:
+                    pass
+            
+            current_template = settings.get("default_cv_template")
+            if current_template not in files:
+                current_template = files[0]
+                
+            selected_template = st.selectbox(
+                "Select Default Template:",
+                options=files,
+                index=files.index(current_template)
+            )
+            
+            if selected_template != settings.get("default_cv_template"):
+                settings["default_cv_template"] = selected_template
+                with open(settings_path, "w", encoding="utf-8") as sf:
+                    json.dump(settings, sf)
+                st.success(f"Default template set to: {selected_template}")
+
+            st.markdown("---")
+            st.subheader("🤖 AI Template Assistant")
+            st.write("Chat with the AI to teach it how to use this template. Any instructions or rules you provide will be permanently saved and applied to all future CVs.")
+            
+            if "cv_rules" in settings and settings["cv_rules"]:
+                with st.expander("📝 Current Learned Rules", expanded=False):
+                    for idx, rule in enumerate(settings["cv_rules"]):
+                        st.markdown(f"- {rule}")
+                    if st.button("Clear All Rules"):
+                        settings["cv_rules"] = []
+                        with open(settings_path, "w", encoding="utf-8") as sf:
+                            json.dump(settings, sf)
+                        st.rerun()
+
+            if "ai_chat" not in st.session_state:
+                st.session_state.ai_chat = [{"role": "assistant", "content": "Hello! I am ready to learn. How should I customize your CVs using this template? (e.g., 'Never change my contact info', 'Keep the Skills section layout exactly the same')"} ]
+                
+            for msg in st.session_state.ai_chat:
+                with st.chat_message(msg["role"]):
+                    st.markdown(msg["content"])
+                    
+            if prompt := st.chat_input("Tell the AI how to use the template..."):
+                st.session_state.ai_chat.append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+                    
+                if "cv_rules" not in settings:
+                    settings["cv_rules"] = []
+                settings["cv_rules"].append(prompt)
+                
+                with open(settings_path, "w", encoding="utf-8") as sf:
+                    json.dump(settings, sf)
+                    
+                reply = f"✅ Got it! I've learned a new rule: *\"{prompt}\"*.\nI will strictly follow this instruction when creating your future CVs."
+                st.session_state.ai_chat.append({"role": "assistant", "content": reply})
+                with st.chat_message("assistant"):
+                    st.markdown(reply)
         else:
             st.write("No sources uploaded yet.")
-
 with tab3:
     st.header("Manual Job Entry")
     
     st.info("Paste the full job description. URL alone is stored as job_link, but matching requires description text unless URL scraping is enabled.")
     
-    m_title = st.text_input("Job Title")
-    m_company = st.text_input("Company")
-    m_location = st.text_input("Location")
-    m_link = st.text_input("Job URL")
-    m_desc = st.text_area("Job Description")
+    if "m_link" not in st.session_state:
+        st.session_state.m_link = ""
+    if "m_title" not in st.session_state:
+        st.session_state.m_title = ""
+    if "m_company" not in st.session_state:
+        st.session_state.m_company = ""
+    if "m_location" not in st.session_state:
+        st.session_state.m_location = ""
+    if "m_desc" not in st.session_state:
+        st.session_state.m_desc = ""
+
+    st.text_input("Job URL", key="m_link")
+    
+    if st.button("Auto-fill from URL (Safe Mode)"):
+        from core.public_job_link_importer import fetch_public_job_data
+        with st.spinner("Fetching public data (safe mode)..."):
+            data = fetch_public_job_data(st.session_state.m_link)
+            if data and not data.get("error"):
+                st.session_state.m_title = data.get("title", "")
+                st.session_state.m_company = data.get("company", "")
+                st.session_state.m_location = data.get("location", "")
+                st.session_state.m_desc = data.get("description", "")
+                if data.get("warning"):
+                    st.warning(data["warning"])
+                st.success("Extracted public data successfully! Please review before processing.")
+            else:
+                err_msg = data.get("error") if data else "Unknown error"
+                st.error(f"Could not extract data from this public link. Please paste the job description manually. ({err_msg})")
+    
+    st.text_input("Job Title", key="m_title")
+    st.text_input("Company", key="m_company")
+    st.text_input("Location", key="m_location")
+    st.text_area("Job Description", key="m_desc")
     
     if st.button("Process Manual Job"):
-        if m_desc and m_link:
+        if st.session_state.m_desc and st.session_state.m_link:
             with st.spinner("Processing job via LLM..."):
-                success, msg = process_manual_entry(db, matcher, m_desc, m_link, m_title, m_company, m_location)
+                success, msg = process_manual_entry(db, matcher, st.session_state.m_desc, st.session_state.m_link, st.session_state.m_title, st.session_state.m_company, st.session_state.m_location)
                 if success:
                     st.success(msg)
                 else:

@@ -28,11 +28,15 @@ def export_pdf(html_path: str, pdf_path: str = None):
         pdf_path = html_path.replace('.html', '.pdf')
         
     try:
-        import pdfkit
-        pdfkit.from_file(html_path, pdf_path)
-        return True
+        from xhtml2pdf import pisa
+        with open(html_path, 'r', encoding='utf-8') as f:
+            source_html = f.read()
+            
+        with open(pdf_path, "w+b") as result_file:
+            pisa_status = pisa.CreatePDF(source_html, dest=result_file)
+            
+        return not pisa_status.err
     except (ImportError, Exception) as e:
-        # Graceful fallback if pdfkit or wkhtmltopdf is not installed
         with open(pdf_path, 'w', encoding='utf-8') as f:
             f.write(f"PDF Export Gracefully Skipped. Dependency missing or error: {e}")
         return False
