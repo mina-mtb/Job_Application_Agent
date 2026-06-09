@@ -411,11 +411,35 @@ with tab2:
                 index=files.index(current_template)
             )
             
-            if selected_template != settings.get("default_cv_template"):
+            if selected_template and selected_template != settings.get("default_cv_template"):
+                if selected_template.lower().endswith('.pdf'):
+                    docx_name = selected_template.replace('.pdf', '.docx')
+                    docx_path = processed_dir / docx_name
+                    if not docx_path.exists():
+                        with st.spinner("Converting PDF to Word Document..."):
+                            try:
+                                from pdf2docx import Converter
+                                pdf_path = processed_dir / selected_template
+                                cv = Converter(str(pdf_path))
+                                cv.convert(str(docx_path))
+                                cv.close()
+                                km.add_source(str(docx_path))
+                                st.success(f"Converted {selected_template} to {docx_name}")
+                            except Exception as e:
+                                st.error(f"Failed to convert PDF to DOCX: {e}")
+                                docx_name = selected_template
+                    else:
+                        st.info(f"Using existing {docx_name} as template.")
+                    selected_template = docx_name
+                
                 settings["default_cv_template"] = selected_template
                 with open(settings_path, "w", encoding="utf-8") as sf:
                     json.dump(settings, sf)
                 st.success(f"Default template set to: {selected_template}")
+                # We do a short sleep so the user can read the message before rerun
+                import time
+                time.sleep(1.5)
+                st.rerun()
 
             st.markdown("---")
             st.subheader("🤖 AI Template Assistant")

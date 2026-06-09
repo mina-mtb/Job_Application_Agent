@@ -65,8 +65,8 @@ class KnowledgeManager:
             print(f"File {file_path} does not exist.")
             return False
             
-        if path.suffix.lower() not in ['.txt', '.md', '.pdf']:
-            print(f"Unsupported file type: {path.suffix}. Only .txt, .md, and .pdf are supported.")
+        if path.suffix.lower() not in ['.txt', '.md', '.pdf', '.docx']:
+            print(f"Unsupported file type: {path.suffix}. Only .txt, .md, .pdf, and .docx are supported.")
             return False
 
         if path.suffix.lower() == '.pdf':
