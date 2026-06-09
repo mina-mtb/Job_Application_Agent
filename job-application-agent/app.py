@@ -147,9 +147,20 @@ with tab1:
                     with st.spinner("Generating CV..."):
                         success = tailor.generate_tailored_cv(job['job_id'])
                         if success:
-                            st.success("CV Generated!")
+                            st.success("CV Generated Successfully!")
                             st.session_state[f"confirm_gen_{job['job_id']}"] = False
-                            st.rerun()
+                            
+                            # Show preview right here
+                            updated_job = db.execute_query("SELECT generated_cv_path FROM jobs WHERE job_id = ?", (job['job_id'],), fetch_one=True)
+                            if updated_job and updated_job.get('generated_cv_path'):
+                                cv_path = updated_job['generated_cv_path']
+                                if os.path.exists(cv_path):
+                                    st.markdown("### Generated CV Preview")
+                                    with open(cv_path, 'r', encoding='utf-8') as f:
+                                        st.text_area("Review your new CV", f.read(), height=400)
+                            
+                            if st.button("Close & Return to Dashboard"):
+                                st.rerun()
                         else:
                             st.error("Failed to generate CV.")
             with c_no:

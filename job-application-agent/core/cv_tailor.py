@@ -98,8 +98,14 @@ Context:
             else:
                 return False
                 
-        with open(base_cv_path, 'r', encoding='utf-8', errors='replace') as f:
-            base_cv_content = f.read()
+        if base_cv_path.endswith('.pdf'):
+            import pypdf
+            with open(base_cv_path, 'rb') as f:
+                reader = pypdf.PdfReader(f)
+                base_cv_content = "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
+        else:
+            with open(base_cv_path, 'r', encoding='utf-8', errors='replace') as f:
+                base_cv_content = f.read()
 
         # Query RAG
         query = f"Job title: {job.get('title', '')}. Description: {job.get('description', '')}"
