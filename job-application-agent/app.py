@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 import yaml
+from dotenv import load_dotenv
+load_dotenv()
 from database.db_manager import DBManager
 from core.knowledge_manager import KnowledgeManager
 from core.job_matcher import JobMatcher
@@ -454,7 +456,7 @@ with tab4:
     allow_rem = st.checkbox("Allow Remote", value=config.get('allow_remote', True))
     allow_hyb = st.checkbox("Allow Hybrid", value=config.get('allow_hybrid', True))
     rej_reloc = st.checkbox("Reject Relocation Required", value=config.get('reject_relocation_required', True))
-    provider = st.selectbox("Active Provider", ["mock", "claude", "openai"], index=["mock", "claude", "openai"].index(config.get('active_provider', 'mock')) if config.get('active_provider', 'mock') in ["mock", "claude", "openai"] else 0)
+    provider = st.selectbox("Active Provider", ["mock", "claude", "gemini", "openai"], index=["mock", "claude", "gemini", "openai"].index(config.get('active_provider', 'mock')) if config.get('active_provider', 'mock') in ["mock", "claude", "gemini", "openai"] else 0)
     
     if st.button("Save Settings"):
         config['preferred_locations'] = [l.strip() for l in locs.split(",") if l.strip()]

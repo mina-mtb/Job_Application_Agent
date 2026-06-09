@@ -98,7 +98,7 @@ Context:
             else:
                 return False
                 
-        with open(base_cv_path, 'r', encoding='utf-8') as f:
+        with open(base_cv_path, 'r', encoding='utf-8', errors='replace') as f:
             base_cv_content = f.read()
 
         # Query RAG

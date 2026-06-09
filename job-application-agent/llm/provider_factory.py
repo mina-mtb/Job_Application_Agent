@@ -20,6 +20,10 @@ def get_provider():
     if provider_name == "claude":
         from llm.claude_provider import ClaudeProvider
         return ClaudeProvider()
+    elif provider_name == "gemini":
+        from llm.gemini_provider import GeminiProvider
+        # You can also parse model config from yaml if needed
+        return GeminiProvider()
     elif provider_name == "mock":
         return MockProvider()
     else:
