@@ -167,6 +167,19 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
         out_dir = os.path.join("outputs", today, folder_name)
         os.makedirs(out_dir, exist_ok=True)
         
+        # Ensure skills and profile are strings
+        skills_val = cv_data.get('skills', '')
+        if isinstance(skills_val, list):
+            skills_val = '\n'.join([f"- {item}" for item in skills_val])
+        else:
+            skills_val = str(skills_val)
+            
+        profile_val = cv_data.get('profile', '')
+        if isinstance(profile_val, list):
+            profile_val = ' '.join([str(item) for item in profile_val])
+        else:
+            profile_val = str(profile_val)
+            
         is_docx = base_cv_path.endswith('.docx')
         
         if is_docx:
@@ -177,19 +190,19 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
             # Replace placeholders
             for p in doc.paragraphs:
                 if '{{PROFILE}}' in p.text:
-                    p.text = p.text.replace('{{PROFILE}}', cv_data.get('profile', ''))
+                    p.text = p.text.replace('{{PROFILE}}', profile_val)
                 if '{{SKILLS}}' in p.text:
                     # Skills usually have newlines, docx paragraphs don't handle newlines well directly in text replace without splitting
-                    p.text = p.text.replace('{{SKILLS}}', cv_data.get('skills', '').replace('\n', '\n'))
+                    p.text = p.text.replace('{{SKILLS}}', skills_val.replace('\n', '\n'))
             
             for table in doc.tables:
                 for row in table.rows:
                     for cell in row.cells:
                         for p in cell.paragraphs:
                             if '{{PROFILE}}' in p.text:
-                                p.text = p.text.replace('{{PROFILE}}', cv_data.get('profile', ''))
+                                p.text = p.text.replace('{{PROFILE}}', profile_val)
                             if '{{SKILLS}}' in p.text:
-                                p.text = p.text.replace('{{SKILLS}}', cv_data.get('skills', ''))
+                                p.text = p.text.replace('{{SKILLS}}', skills_val)
                                 
             final_path = os.path.join(out_dir, "tailored_cv.docx")
             doc.save(final_path)
@@ -202,7 +215,7 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
                 print(f"Failed to convert DOCX to PDF: {e}")
         else:
             # Fallback to saving markdown with the replaced text
-            cv_md = base_cv_content.replace('{{PROFILE}}', cv_data.get('profile', '')).replace('{{SKILLS}}', cv_data.get('skills', ''))
+            cv_md = base_cv_content.replace('{{PROFILE}}', profile_val).replace('{{SKILLS}}', skills_val)
             final_path = os.path.join(out_dir, "tailored_cv.md")
             export_markdown(cv_md, final_path)
             html_path = os.path.join(out_dir, "tailored_cv.html")
