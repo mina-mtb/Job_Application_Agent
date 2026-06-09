@@ -144,4 +144,7 @@ Context:
             (md_path, job_id)
         )
         
+        # Add to knowledge manager for future reuse
+        self.km.add_generated_cv(cv_md, job_id)
+        
         return True

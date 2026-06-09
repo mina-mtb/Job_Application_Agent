@@ -80,6 +80,81 @@ with tab1:
         
     st.write(f"Showing {len(jobs)} jobs")
     
+    @st.dialog("CV Generation Strategy", width="large")
+    def cv_generation_dialog(job, db, km, tailor):
+        st.write(f"Evaluating strategy for: **{job['title']}** at **{job['company']}**")
+        
+        # Calculate scores
+        with st.spinner("Analyzing past CVs and your base profile..."):
+            best_match = km.get_best_past_cv_match(job['description'])
+            predicted_score = km.predict_new_cv_score(job['description'])
+            
+        st.markdown("### Analysis Results")
+        if best_match:
+            old_jobs = db.execute_query("SELECT title, company FROM jobs WHERE job_id = ?", (best_match['job_id'],))
+            old_job_title = f"{old_jobs[0]['title']} at {old_jobs[0]['company']}" if old_jobs else "an unknown job"
+            st.info(f"🔍 **Best Past CV Found:** You previously generated a CV for **{old_job_title}**.\n\n**Match Score:** {best_match['score']}%")
+        else:
+            st.info("🔍 **No highly relevant past CVs found.**")
+            
+        st.success(f"✨ **Predicted New CV Score:** {predicted_score}%\n\n(Estimated match if we generate a brand new CV using Claude)")
+                   
+        st.markdown("---")
+        st.write("Would you like to reuse the past CV (Free) or generate a new one (Uses API)?")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if best_match:
+                if st.button("♻️ Reuse Past CV (Free)", use_container_width=True):
+                    old_job_data = db.execute_query("SELECT generated_cv_path FROM jobs WHERE job_id = ?", (best_match['job_id'],))
+                    if old_job_data and old_job_data[0]['generated_cv_path'] and os.path.exists(old_job_data[0]['generated_cv_path']):
+                        old_path = old_job_data[0]['generated_cv_path']
+                        from datetime import date
+                        import shutil
+                        today = date.today().strftime("%Y-%m-%d")
+                        safe_company = "".join(x for x in (job.get('company') or "Unknown") if x.isalnum() or x in " _-")
+                        safe_title = "".join(x for x in (job.get('title') or "Job") if x.isalnum() or x in " _-")
+                        folder_name = f"{safe_company}_{safe_title}".replace(" ", "_")
+                        out_dir = os.path.join("outputs", today, folder_name)
+                        os.makedirs(out_dir, exist_ok=True)
+                        new_path = os.path.join(out_dir, "tailored_cv.md")
+                        shutil.copy2(old_path, new_path)
+                        # Copy PDF too if exists
+                        old_pdf = old_path.replace(".md", ".pdf")
+                        if os.path.exists(old_pdf):
+                            new_pdf = os.path.join(out_dir, "tailored_cv.pdf")
+                            shutil.copy2(old_pdf, new_pdf)
+                            
+                        db.execute_query("UPDATE jobs SET status = 'cv_generated', generated_cv_path = ? WHERE job_id = ?", (new_path, job['job_id']))
+                        st.success("Past CV successfully reused!")
+                        st.rerun()
+                    else:
+                        st.error("Could not find the old CV file.")
+            else:
+                st.write("*(No past CV to reuse)*")
+                    
+        with col2:
+            if st.button("🚀 Generate New CV (API)", use_container_width=True, type="primary"):
+                st.session_state[f"confirm_gen_{job['job_id']}"] = True
+
+        if st.session_state.get(f"confirm_gen_{job['job_id']}", False):
+            st.warning("⚠️ **Double Confirmation**: This action will consume API credits. Are you absolutely sure you want to generate a new CV?")
+            c_yes, c_no = st.columns(2)
+            with c_yes:
+                if st.button("✅ Yes, proceed and pay", use_container_width=True):
+                    with st.spinner("Generating CV..."):
+                        success = tailor.generate_tailored_cv(job['job_id'])
+                        if success:
+                            st.success("CV Generated!")
+                            st.session_state[f"confirm_gen_{job['job_id']}"] = False
+                            st.rerun()
+                        else:
+                            st.error("Failed to generate CV.")
+            with c_no:
+                if st.button("❌ Cancel", use_container_width=True):
+                    st.session_state[f"confirm_gen_{job['job_id']}"] = False
+                    st.rerun()
+
     for job in jobs:
         with st.expander(f"{job.get('title')} at {job.get('company')} ({job.get('status')}) - Score: {job.get('suitability_score')}"):
             st.write(f"**Location:** {job.get('location')}")
@@ -95,14 +170,8 @@ with tab1:
             c1, c2, c3, c4, c5 = st.columns(5)
             with c1:
                 if can_generate_cv(job.get('status')):
-                    if st.button("Generate CV", key=f"gen_{job['job_id']}"):
-                        with st.spinner("Generating CV..."):
-                            success = tailor.generate_tailored_cv(job['job_id'])
-                            if success:
-                                st.success("CV Generated!")
-                                st.rerun()
-                            else:
-                                st.error("Failed to generate CV.")
+                    if st.button("Prepare CV", key=f"gen_{job['job_id']}"):
+                        cv_generation_dialog(job, db, km, tailor)
             with c2:
                 if job.get('generated_cv_path') and os.path.exists(job['generated_cv_path']):
                     if st.button("Preview Text CV", key=f"prev_{job['job_id']}"):
@@ -291,18 +360,19 @@ with tab2:
                             json.dump(settings, sf)
                         st.rerun()
 
-            if "ai_chat" not in st.session_state:
-                st.session_state.ai_chat = [{"role": "assistant", "content": "Hello! I am ready to learn. How should I customize your CVs using this template? (e.g., 'Never change my contact info', 'Keep the Skills section layout exactly the same')"} ]
-                
-            for msg in st.session_state.ai_chat:
-                with st.chat_message(msg["role"]):
-                    st.markdown(msg["content"])
+            chat_container = st.container(height=350)
+            
+            with chat_container:
+                if "ai_chat" not in st.session_state:
+                    st.session_state.ai_chat = [{"role": "assistant", "content": "Hello! I am ready to learn. How should I customize your CVs using this template? (e.g., 'Never change my contact info', 'Keep the Skills section layout exactly the same')"} ]
+                    
+                for msg in st.session_state.ai_chat:
+                    with st.chat_message(msg["role"]):
+                        st.markdown(msg["content"])
                     
             if prompt := st.chat_input("Tell the AI how to use the template..."):
                 st.session_state.ai_chat.append({"role": "user", "content": prompt})
-                with st.chat_message("user"):
-                    st.markdown(prompt)
-                    
+                
                 if "cv_rules" not in settings:
                     settings["cv_rules"] = []
                 settings["cv_rules"].append(prompt)
@@ -310,10 +380,10 @@ with tab2:
                 with open(settings_path, "w", encoding="utf-8") as sf:
                     json.dump(settings, sf)
                     
-                reply = f"✅ Got it! I've learned a new rule: *\"{prompt}\"*.\nI will strictly follow this instruction when creating your future CVs."
+                # Simple conversational reply
+                reply = f"✅ Got it! I've noted down: *\"{prompt}\"*.\n\nI will make sure to follow this instruction for all your future CVs. Is there anything else about the formatting or content that I should know?"
                 st.session_state.ai_chat.append({"role": "assistant", "content": reply})
-                with st.chat_message("assistant"):
-                    st.markdown(reply)
+                st.rerun()
         else:
             st.write("No sources uploaded yet.")
 with tab3:

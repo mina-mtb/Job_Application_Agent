@@ -140,6 +140,102 @@ class KnowledgeManager:
                 
         return formatted_results
 
+    def add_generated_cv(self, text: str, job_id: str) -> bool:
+        """Add a generated CV to the knowledge base."""
+        cleaned = self.clean_text(text)
+        chunks = self.chunk_text(cleaned)
+        if not chunks: 
+            return False
+            
+        try:
+            self.collection.delete(where={"$and": [{"job_id": {"$eq": job_id}}, {"type": {"$eq": "generated_cv"}}]})
+        except Exception:
+            pass
+            
+        ids = [f"cv_{job_id}_{i}" for i in range(len(chunks))]
+        metadatas = [{"type": "generated_cv", "job_id": job_id, "chunk_index": i} for i in range(len(chunks))]
+        
+        self.collection.add(
+            documents=chunks,
+            metadatas=metadatas,
+            ids=ids
+        )
+        return True
+        
+    def get_best_past_cv_match(self, job_description: str) -> dict:
+        """Find the best matching previously generated CV for a new job description."""
+        if self.collection.count() == 0:
+            return None
+            
+        try:
+            results = self.collection.query(
+                query_texts=[job_description],
+                n_results=20,
+                where={"type": "generated_cv"}
+            )
+        except Exception:
+            return None
+            
+        if not results or not results.get('documents') or not results['documents'][0]:
+            return None
+            
+        job_scores = {}
+        for i in range(len(results['documents'][0])):
+            meta = results['metadatas'][0][i]
+            dist = results['distances'][0][i]
+            job_id = meta.get("job_id")
+            if not job_id: continue
+            
+            if job_id not in job_scores:
+                job_scores[job_id] = []
+            job_scores[job_id].append(dist)
+            
+        if not job_scores:
+            return None
+            
+        # Best match is the one with the lowest minimum distance chunk
+        best_job_id = min(job_scores.keys(), key=lambda j: min(job_scores[j]))
+        best_distance = min(job_scores[best_job_id])
+        
+        # Convert distance to a rough percentage (Chroma default is L2 or Cosine, usually 0 is perfect)
+        # Using a simple heuristic for L2 or Cosine:
+        match_percentage = max(0, min(100, int((1.0 - (best_distance / 2.0)) * 100)))
+        
+        return {
+            "job_id": best_job_id,
+            "distance": best_distance,
+            "score": match_percentage
+        }
+
+    def predict_new_cv_score(self, job_description: str) -> int:
+        """Estimate the acceptance chance if a new CV is generated using the base profile."""
+        if self.collection.count() == 0:
+            return 0
+            
+        try:
+            # Query against base sources (not generated CVs)
+            results = self.collection.query(
+                query_texts=[job_description],
+                n_results=20,
+                where={"type": {"$ne": "generated_cv"}}
+            )
+        except Exception:
+            return 0
+            
+        if not results or not results.get('documents') or not results['documents'][0]:
+            return 0
+            
+        # The base profile match is based on the average distance of the top 5 relevant chunks
+        distances = results['distances'][0][:5]
+        if not distances:
+            return 0
+            
+        avg_distance = sum(distances) / len(distances)
+        # Base profile usually has broader knowledge, so the raw chunk match might be slightly worse
+        # than a perfectly tailored CV. We assume the LLM will synthesize it well, so we give it a boost.
+        match_percentage = max(0, min(98, int((1.0 - (avg_distance / 2.0)) * 100) + 10))
+        return match_percentage
+
     def delete_source(self, filename: str) -> bool:
         """Delete a source file from disk and its embeddings from the knowledge base."""
         path = self.processed_dir / filename
