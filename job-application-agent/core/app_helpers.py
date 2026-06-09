@@ -121,8 +121,8 @@ def run_daily_matching(db: DBManager, matcher: JobMatcher) -> dict:
 def handle_knowledge_upload(km: KnowledgeManager, file_path: str):
     if not os.path.exists(file_path):
         return False, "File does not exist."
-    if not (file_path.lower().endswith('.md') or file_path.lower().endswith('.txt') or file_path.lower().endswith('.pdf')):
-        return False, "Only .md, .txt, and .pdf files are supported."
+    if not (file_path.lower().endswith('.md') or file_path.lower().endswith('.txt') or file_path.lower().endswith('.pdf') or file_path.lower().endswith('.docx')):
+        return False, "Only .md, .txt, .pdf, and .docx files are supported."
         
     try:
         km.add_source(file_path)

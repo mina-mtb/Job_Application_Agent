@@ -147,29 +147,33 @@ with tab1:
                     with st.spinner("Generating CV..."):
                         success = tailor.generate_tailored_cv(job['job_id'])
                         if success:
-                            st.success("CV Generated Successfully!")
+                            st.session_state[f"gen_success_{job['job_id']}"] = True
                             st.session_state[f"confirm_gen_{job['job_id']}"] = False
-                            
-                            # Show preview right here
-                            updated_jobs = db.execute_query("SELECT generated_cv_path FROM jobs WHERE job_id = ?", (job['job_id'],))
-                            if updated_jobs and updated_jobs[0].get('generated_cv_path'):
-                                cv_path = updated_jobs[0]['generated_cv_path']
-                                if os.path.exists(cv_path):
-                                    st.markdown("### Generated CV Preview")
-                                    if cv_path.endswith('.docx'):
-                                        st.success("CV Generated as DOCX. Close this dialog and click 'Download PDF' or 'Download DOCX' in the job dashboard.")
-                                    else:
-                                        with open(cv_path, 'r', encoding='utf-8') as f:
-                                            st.text_area("Review your new CV", f.read(), height=400)
-                            
-                            if st.button("Close & Return to Dashboard"):
-                                st.rerun()
+                            st.rerun()
                         else:
                             st.error("Failed to generate CV.")
             with c_no:
                 if st.button("❌ Cancel", use_container_width=True):
                     st.session_state[f"confirm_gen_{job['job_id']}"] = False
                     st.rerun()
+                    
+        # Show success and preview outside the button block so it persists
+        if st.session_state.get(f"gen_success_{job['job_id']}", False):
+            st.success("CV Generated Successfully!")
+            updated_jobs = db.execute_query("SELECT generated_cv_path FROM jobs WHERE job_id = ?", (job['job_id'],))
+            if updated_jobs and updated_jobs[0].get('generated_cv_path'):
+                cv_path = updated_jobs[0]['generated_cv_path']
+                if os.path.exists(cv_path):
+                    st.markdown("### Generated CV Preview")
+                    if cv_path.endswith('.docx'):
+                        st.success("CV Generated as DOCX. Close this dialog and click 'Download PDF' or 'Download DOCX' in the job dashboard.")
+                    else:
+                        with open(cv_path, 'r', encoding='utf-8') as f:
+                            st.text_area("Review your new CV", f.read(), height=400)
+            
+            if st.button("Close & Return to Dashboard"):
+                st.session_state[f"gen_success_{job['job_id']}"] = False
+                st.rerun()
 
     status_emojis = {
         "new": "🔵",
