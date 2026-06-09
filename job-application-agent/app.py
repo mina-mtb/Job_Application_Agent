@@ -381,10 +381,10 @@ with tab2:
                     json.dump(settings, sf)
                     
                 # Simple conversational reply (Smart Mock)
-                template_name = settings.get("default_base_cv", "your selected template")
+                template_name = settings.get("default_cv_template", "قالب انتخاب نشده")
                 lower_prompt = prompt.lower()
                 
-                if any(word in lower_prompt for word in ["کدام فایل", "کدام تمپلت", "اسم فایل", "کدام رزومه", "چه فایلی", "چه تمپلتی", "تو الان میدانی"]):
+                if any(word in lower_prompt for word in ["کدام فایل", "کدام تمپلت", "اسم فایل", "کدام رزومه", "چه فایلی", "چه تمپلتی", "تو الان میدانی", "اسمش را", "اسمتمپلت"]):
                     reply = f"بله حتماً! من کاملاً می‌دانم که شما فایل **`{template_name}`** را به عنوان قالب اصلی (Base CV) انتخاب کرده‌اید. 🤓\n\nمی‌توانید با خیال راحت به من بگویید در این فایل چه بخش‌هایی را تغییر دهم و چه بخش‌هایی را ثابت نگه دارم."
                 elif any(word in lower_prompt for word in ["سلام", "hello", "hi"]):
                     reply = f"سلام! من آماده‌ام که قوانین مربوط به فایل **`{template_name}`** را یاد بگیرم. می‌خواهید کدام بخش آن را ثابت نگه دارم؟"

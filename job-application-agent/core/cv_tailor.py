@@ -84,8 +84,8 @@ Context:
                 with open(settings_path, 'r', encoding='utf-8') as f:
                     st = json.load(f)
                     cv_rules = st.get("cv_rules", [])
-                    if st.get("default_base_cv"):
-                        base_cv_path = os.path.join("knowledge_base", "processed_sources", st["default_base_cv"])
+                    if st.get("default_cv_template"):
+                        base_cv_path = os.path.join("knowledge_base", "processed_sources", st["default_cv_template"])
             except Exception:
                 pass
                 
