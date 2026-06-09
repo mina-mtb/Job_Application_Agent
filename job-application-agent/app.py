@@ -430,7 +430,6 @@ with tab2:
                                 docx_name = selected_template
                     else:
                         st.info(f"Using existing {docx_name} as template.")
-                    selected_template = docx_name
                 
                 settings["default_cv_template"] = selected_template
                 with open(settings_path, "w", encoding="utf-8") as sf:

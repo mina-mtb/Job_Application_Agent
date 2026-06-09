@@ -86,7 +86,10 @@ Context:
                     st = json.load(f)
                     cv_rules = st.get("cv_rules", [])
                     if st.get("default_cv_template"):
-                        base_cv_path = os.path.join("knowledge_base", "processed_sources", st["default_cv_template"])
+                        template_name = st["default_cv_template"]
+                        if template_name.lower().endswith('.pdf'):
+                            template_name = template_name[:-4] + '.docx'
+                        base_cv_path = os.path.join("knowledge_base", "processed_sources", template_name)
             except Exception as e:
                 print("DEBUG EXCEPTION in json load:", e)
                 pass
