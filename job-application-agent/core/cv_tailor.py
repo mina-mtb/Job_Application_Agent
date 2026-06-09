@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from datetime import date
 from database.db_manager import DBManager
 from core.knowledge_manager import KnowledgeManager
@@ -86,7 +87,8 @@ Context:
                     cv_rules = st.get("cv_rules", [])
                     if st.get("default_cv_template"):
                         base_cv_path = os.path.join("knowledge_base", "processed_sources", st["default_cv_template"])
-            except Exception:
+            except Exception as e:
+                print("DEBUG EXCEPTION in json load:", e)
                 pass
                 
         if not os.path.exists(base_cv_path):
@@ -103,6 +105,10 @@ Context:
             with open(base_cv_path, 'rb') as f:
                 reader = pypdf.PdfReader(f)
                 base_cv_content = "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
+        elif base_cv_path.endswith('.docx'):
+            import docx
+            doc = docx.Document(base_cv_path)
+            base_cv_content = "\n".join([p.text for p in doc.paragraphs])
         else:
             with open(base_cv_path, 'r', encoding='utf-8', errors='replace') as f:
                 base_cv_content = f.read()
@@ -142,10 +148,6 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
 """
         response = self.llm.generate_completion(prompt)
         
-        import json
-        import re
-        
-        # Clean JSON markdown block if exists
         response_clean = re.sub(r'^```(?:json)?\s*', '', response.strip())
         response_clean = re.sub(r'\s*```$', '', response_clean)
         
@@ -156,7 +158,6 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
             cv_data = {"profile": "Failed to generate profile.", "skills": "Failed to generate skills."}
             
         # Outputs directory structure
-        from datetime import date
         today = date.today().strftime("%Y-%m-%d")
         safe_company = "".join(x for x in (job.get('company') or "Unknown") if x.isalnum() or x in " _-")
         safe_title = "".join(x for x in (job.get('title') or "Job") if x.isalnum() or x in " _-")
@@ -181,6 +182,7 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
             profile_val = str(profile_val)
             
         is_docx = base_cv_path.endswith('.docx')
+        print("DEBUG:", base_cv_path, is_docx)
         
         if is_docx:
             import docx
