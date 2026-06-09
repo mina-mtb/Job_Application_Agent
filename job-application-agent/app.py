@@ -93,9 +93,19 @@ with tab1:
             
         st.markdown("### Analysis Results")
         if best_match:
-            old_jobs = db.execute_query("SELECT title, company FROM jobs WHERE job_id = ?", (best_match['job_id'],))
+            old_jobs = db.execute_query("SELECT title, company, generated_cv_path FROM jobs WHERE job_id = ?", (best_match['job_id'],))
             old_job_title = f"{old_jobs[0]['title']} at {old_jobs[0]['company']}" if old_jobs else "an unknown job"
             st.info(f"🔍 **Best Past CV Found:** You previously generated a CV for **{old_job_title}**.\n\n**Match Score:** {best_match['score']}%")
+            
+            if old_jobs and old_jobs[0].get('generated_cv_path') and os.path.exists(old_jobs[0]['generated_cv_path']):
+                cv_path = old_jobs[0]['generated_cv_path']
+                if cv_path.endswith('.docx'):
+                    with open(cv_path, 'rb') as f:
+                        st.download_button("👁️ Download DOCX to Preview Past CV", f, file_name=os.path.basename(cv_path), use_container_width=True)
+                elif cv_path.endswith('.md'):
+                    with st.expander("👁️ View Past CV (Markdown)"):
+                        with open(cv_path, 'r', encoding='utf-8') as f:
+                            st.markdown(f.read())
         else:
             st.info("🔍 **No highly relevant past CVs found.**")
             
