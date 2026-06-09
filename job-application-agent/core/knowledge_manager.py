@@ -63,11 +63,11 @@ class KnowledgeManager:
         path = Path(file_path)
         if not path.exists():
             print(f"File {file_path} does not exist.")
-            return False
+            return False, ""
             
         if path.suffix.lower() not in ['.txt', '.md', '.pdf', '.docx']:
             print(f"Unsupported file type: {path.suffix}. Only .txt, .md, .pdf, and .docx are supported.")
-            return False
+            return False, ""
 
         if path.suffix.lower() == '.pdf':
             try:
@@ -77,7 +77,7 @@ class KnowledgeManager:
                     text = "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
             except Exception as e:
                 print(f"Failed to read PDF: {e}")
-                return False
+                return False, ""
         elif path.suffix.lower() == '.docx':
             try:
                 import docx
@@ -85,7 +85,7 @@ class KnowledgeManager:
                 text = "\n".join([p.text for p in doc.paragraphs])
             except Exception as e:
                 print(f"Failed to read DOCX: {e}")
-                return False
+                return False, ""
         else:
             with open(path, 'r', encoding='utf-8') as f:
                 text = f.read()
@@ -97,13 +97,13 @@ class KnowledgeManager:
         existing = self.collection.get(where={"file_hash": file_hash})
         if existing and existing['ids']:
             print(f"File {file_path} is already in the knowledge base (duplicate hash).")
-            return False
+            return False, ""
             
         cleaned = self.clean_text(text)
         chunks = self.chunk_text(cleaned)
         
         if not chunks:
-            return False
+            return False, ""
 
         ids = [f"{path.name}_{file_hash}_{i}" for i in range(len(chunks))]
         metadatas = [{"source": path.name, "file_hash": file_hash, "chunk_index": i} for i in range(len(chunks))]
@@ -123,7 +123,7 @@ class KnowledgeManager:
         shutil.copy2(path, dest_path)
         
         print(f"Successfully added {path.name} to knowledge base in {len(chunks)} chunks.")
-        return True
+        return True, dest_path.name
 
     def query_knowledge_base(self, query: str, top_k: int = 5) -> list[dict]:
         """Query the knowledge base for relevant chunks."""

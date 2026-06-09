@@ -348,7 +348,7 @@ with tab2:
                             file_obj.write(new_content)
                             
                         from pathlib import Path
-                        km.add_source(Path(temp_path))
+                        success, final_name = km.add_source(Path(temp_path))
                         st.rerun()
                 with c2:
                     if st.button("❌ Cancel"):
@@ -423,7 +423,7 @@ with tab2:
                                 cv = Converter(str(pdf_path))
                                 cv.convert(str(docx_path))
                                 cv.close()
-                                km.add_source(str(docx_path))
+                                success, final_name = km.add_source(str(docx_path))
                                 st.success(f"Converted {selected_template} to {docx_name}")
                             except Exception as e:
                                 st.error(f"Failed to convert PDF to DOCX: {e}")

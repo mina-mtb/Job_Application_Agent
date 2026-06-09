@@ -126,6 +126,20 @@ def handle_knowledge_upload(km: KnowledgeManager, file_path: str):
         
     try:
         km.add_source(file_path)
+        
+        # If it's a PDF, automatically generate a DOCX version in processed_sources
+        if file_path.lower().endswith('.pdf'):
+            from pathlib import Path
+            from pdf2docx import Converter
+            original_path = Path(file_path)
+            docx_name = original_path.name.replace('.pdf', '.docx')
+            docx_path = km.processed_dir / docx_name
+            if not docx_path.exists():
+                cv = Converter(str(file_path))
+                cv.convert(str(docx_path))
+                cv.close()
+                # Do not call km.add_source(docx_path) here because the PDF text is already embedded
+                
         return True, "File successfully added to Knowledge Base."
     except Exception as e:
         return False, f"Failed to add file: {str(e)}"
