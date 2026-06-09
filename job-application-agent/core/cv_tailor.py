@@ -141,13 +141,29 @@ You are an expert resume writer.
 {rules_text}
 
 ### INSTRUCTIONS:
-You need to generate two highly tailored sections for the candidate's CV based on the Job Description and Evidence.
-1. "profile": A short, impactful professional summary (3-4 sentences).
-2. "skills": A bulleted list of skills relevant to the job, formatted as markdown bullets.
+You must perform an internal A/B test to determine the best structure for this specific job.
 
-You MUST STRICTLY FOLLOW the "Strict Custom Rules from User". Do not hallucinate skills.
+1. Structure A (Classic & Comprehensive):
+   - Profile: A classic 2-paragraph narrative (4-6 sentences total).
+   - Skills: A simple comprehensive bulleted list of 10-15 skills.
 
-Output ONLY a valid JSON object with the keys "profile" and "skills".
+2. Structure B (Modern & Scannable):
+   - Profile: A modern hybrid: 1 short introductory paragraph (2-3 sentences) followed by 3-4 bullet points of key matching achievements.
+   - Skills: A categorized list of skills (e.g., Programming, AI/Data, Cloud, Soft Skills).
+
+3. Evaluation:
+   - Briefly analyze the Job Description. Does it value a traditional narrative or a fast, highly-scannable format?
+   - Choose the structure that gives the candidate the highest chance of success.
+
+You MUST STRICTLY FOLLOW the "Strict Custom Rules from User", applying them to BOTH structures. Do not hallucinate skills.
+
+Output ONLY a valid JSON object in exactly this format:
+{
+  "evaluation": "Your brief analysis of why A or B is better for this job...",
+  "chosen_structure": "A",
+  "profile": "The profile text of the chosen structure",
+  "skills": "The skills text of the chosen structure"
+}
 """
         response = self.llm.generate_completion(prompt)
         
@@ -156,10 +172,14 @@ Output ONLY a valid JSON object with the keys "profile" and "skills".
         
         try:
             cv_data = json.loads(response_clean)
+            print("\n--- AI CV Structure Evaluation ---")
+            print(f"Evaluation: {cv_data.get('evaluation', 'No evaluation provided.')}")
+            print(f"Chosen Structure: {cv_data.get('chosen_structure', 'Unknown')}")
+            print("----------------------------------\n")
         except Exception as e:
             print(f"Failed to parse JSON: {e}")
             cv_data = {"profile": "Failed to generate profile.", "skills": "Failed to generate skills."}
-            
+
         # Outputs directory structure
         today = date.today().strftime("%Y-%m-%d")
         safe_company = "".join(x for x in (job.get('company') or "Unknown") if x.isalnum() or x in " _-")
