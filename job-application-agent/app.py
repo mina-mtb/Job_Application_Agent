@@ -297,16 +297,27 @@ with tab2:
             st.error("File no longer exists.")
             return
 
-        if f.endswith('.pdf'):
-            st.info("PDF files cannot be edited directly. Please delete and upload a new version.")
+        if f.endswith('.pdf') or f.endswith('.docx'):
+            st.info("This file type cannot be edited directly in the browser.")
             try:
                 import base64
                 with open(path, "rb") as f_obj:
-                    base64_pdf = base64.b64encode(f_obj.read()).decode('utf-8')
-                pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="600" type="application/pdf"></iframe>'
-                st.markdown(pdf_display, unsafe_allow_html=True)
+                    file_data = f_obj.read()
+                    base64_data = base64.b64encode(file_data).decode('utf-8')
+                
+                # Provide a download button
+                st.download_button(
+                    label=f"⬇️ Download {f}",
+                    data=file_data,
+                    file_name=f,
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document" if f.endswith('.docx') else "application/pdf"
+                )
+                
+                if f.endswith('.pdf'):
+                    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_data}" width="100%" height="600" type="application/pdf"></iframe>'
+                    st.markdown(pdf_display, unsafe_allow_html=True)
             except Exception as e:
-                st.error(f"Could not read PDF: {e}")
+                st.error(f"Could not read file: {e}")
                 
             if st.button("Close Viewer"):
                 st.rerun()
