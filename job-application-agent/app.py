@@ -42,7 +42,7 @@ db, km, matcher, tailor, config = init_system()
 
 st.title("Job Application Agent Dashboard")
 
-tab1, tab2, tab3, tab4 = st.tabs(["Dashboard", "Knowledge Base", "Manual Entry", "Settings"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Dashboard", "Knowledge Base", "Manual Entry", "Settings", "Application History"])
 
 with tab1:
     st.header("Jobs Dashboard")
@@ -156,8 +156,11 @@ with tab1:
                                 cv_path = updated_jobs[0]['generated_cv_path']
                                 if os.path.exists(cv_path):
                                     st.markdown("### Generated CV Preview")
-                                    with open(cv_path, 'r', encoding='utf-8') as f:
-                                        st.text_area("Review your new CV", f.read(), height=400)
+                                    if cv_path.endswith('.docx'):
+                                        st.success("CV Generated as DOCX. Close this dialog and click 'Download PDF' or 'Download DOCX' in the job dashboard.")
+                                    else:
+                                        with open(cv_path, 'r', encoding='utf-8') as f:
+                                            st.text_area("Review your new CV", f.read(), height=400)
                             
                             if st.button("Close & Return to Dashboard"):
                                 st.rerun()
@@ -198,15 +201,18 @@ with tab1:
                         cv_generation_dialog(job, db, km, tailor)
             with c2:
                 if job.get('generated_cv_path') and os.path.exists(job['generated_cv_path']):
-                    if st.button("Preview Text CV", key=f"prev_{job['job_id']}"):
-                        with open(job['generated_cv_path'], 'r', encoding='utf-8') as f:
-                            st.markdown(f.read())
+                    if job['generated_cv_path'].endswith('.docx'):
+                        pass # No text preview for DOCX
+                    else:
+                        if st.button("Preview Text CV", key=f"prev_{job['job_id']}"):
+                            with open(job['generated_cv_path'], 'r', encoding='utf-8') as f:
+                                st.markdown(f.read())
                     if st.button("🗑️ Delete & Reset", key=f"del_cv_{job['job_id']}"):
                         import os
                         try:
                             if os.path.exists(job['generated_cv_path']):
                                 os.remove(job['generated_cv_path'])
-                            pdf_path = job['generated_cv_path'].replace('.md', '.pdf')
+                            pdf_path = job['generated_cv_path'].replace('.md', '.pdf').replace('.docx', '.pdf')
                             if os.path.exists(pdf_path):
                                 os.remove(pdf_path)
                             html_path = job['generated_cv_path'].replace('.md', '.html')
@@ -217,7 +223,17 @@ with tab1:
                         db.execute_query("UPDATE jobs SET status = 'needs_review', generated_cv_path = NULL WHERE job_id = ?", (job['job_id'],))
                         st.rerun()
                     
-                    pdf_path = job['generated_cv_path'].replace('.md', '.pdf')
+                    if job['generated_cv_path'].endswith('.docx'):
+                        with open(job['generated_cv_path'], "rb") as f:
+                            st.download_button(
+                                label="📝 Download DOCX",
+                                data=f,
+                                file_name=os.path.basename(job['generated_cv_path']),
+                                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                key=f"dl_docx_{job['job_id']}"
+                            )
+                    
+                    pdf_path = job['generated_cv_path'].replace('.md', '.pdf').replace('.docx', '.pdf')
                     if os.path.exists(pdf_path):
                         with open(pdf_path, "rb") as f:
                             st.download_button(
@@ -255,7 +271,7 @@ with tab1:
 
 with tab2:
     st.header("Knowledge Base Management")
-    uploaded_file = st.file_uploader("Upload Profile or Experience Document (.md, .txt, .pdf)", type=['md', 'txt', 'pdf'])
+    uploaded_file = st.file_uploader("Upload Profile, Experience, or Template (.md, .txt, .pdf, .docx)", type=['md', 'txt', 'pdf', 'docx'])
     
     if st.button("Add to Knowledge Base") and uploaded_file is not None:
         temp_dir = "temp_uploads"
@@ -509,3 +525,20 @@ with tab4:
         with open("config/config.yaml", 'w') as f:
             yaml.dump(config, f)
         st.success("Settings saved! Restart app to fully apply provider changes.")
+
+with tab5:
+    st.header("Application History")
+    st.write("Jobs you have applied for are listed here.")
+    import pandas as pd
+    applied_jobs = [j for j in jobs if j.get('status') == 'applied']
+    if applied_jobs:
+        df = pd.DataFrame([{
+            "Date Applied": j.get('date_applied', 'Unknown'),
+            "Company": j.get('company', ''),
+            "Title": j.get('title', ''),
+            "Link": j.get('job_link', ''),
+            "CV Path": j.get('generated_cv_path', '')
+        } for j in applied_jobs])
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.info("No applications yet. Your applied jobs will appear here.")

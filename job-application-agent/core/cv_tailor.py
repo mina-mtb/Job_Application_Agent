@@ -120,11 +120,6 @@ Context:
         prompt = f"""
 You are an expert resume writer.
 
-### Base CV Template:
-```markdown
-{base_cv_content}
-```
-
 ### Job Description:
 ```
 {job.get('description', '')}
@@ -137,34 +132,31 @@ You are an expert resume writer.
 {rules_text}
 
 ### INSTRUCTIONS:
-Rewrite the Base CV Template to perfectly tailor it to the Job Description. 
-You MUST STRICTLY FOLLOW the "Strict Custom Rules from User". Do not change any section, layout, or formatting that the user asked you to preserve.
-Use the Evidence provided to make the resume accurate to the candidate's actual skills.
-Do not hallucinate skills.
+You need to generate two highly tailored sections for the candidate's CV based on the Job Description and Evidence.
+1. "profile": A short, impactful professional summary (3-4 sentences).
+2. "skills": A bulleted list of skills relevant to the job, formatted as markdown bullets.
 
-Output ONLY the complete, final Markdown text of the new tailored CV. Do not output any thinking, JSON, or markdown codeblocks wrapping the whole file. Start directly with the CV markdown.
+You MUST STRICTLY FOLLOW the "Strict Custom Rules from User". Do not hallucinate skills.
+
+Output ONLY a valid JSON object with the keys "profile" and "skills".
 """
         response = self.llm.generate_completion(prompt)
         
+        import json
         import re
-        cv_md = re.sub(r'^```markdown\s*', '', response)
-        cv_md = re.sub(r'\s*```$', '', cv_md)
-        cv_md = cv_md.strip()
         
-        # Evidence sources mapping
-        sources_set = set()
-        for chunk in rag_results:
-            src = chunk['metadata'].get('source', 'Unknown')
-            if not src.endswith('_template.md'):
-                sources_set.add(src)
+        # Clean JSON markdown block if exists
+        response_clean = re.sub(r'^```(?:json)?\s*', '', response.strip())
+        response_clean = re.sub(r'\s*```$', '', response_clean)
         
-        evidence_sources = list(sources_set)
-        if evidence_sources:
-            cv_md += f"\n\n## Evidence Sources\n"
-            for src in evidence_sources:
-                cv_md += f"- {src}\n"
-        
+        try:
+            cv_data = json.loads(response_clean)
+        except Exception as e:
+            print(f"Failed to parse JSON: {e}")
+            cv_data = {"profile": "Failed to generate profile.", "skills": "Failed to generate skills."}
+            
         # Outputs directory structure
+        from datetime import date
         today = date.today().strftime("%Y-%m-%d")
         safe_company = "".join(x for x in (job.get('company') or "Unknown") if x.isalnum() or x in " _-")
         safe_title = "".join(x for x in (job.get('title') or "Job") if x.isalnum() or x in " _-")
@@ -175,22 +167,56 @@ Output ONLY the complete, final Markdown text of the new tailored CV. Do not out
         out_dir = os.path.join("outputs", today, folder_name)
         os.makedirs(out_dir, exist_ok=True)
         
-        md_path = os.path.join(out_dir, "tailored_cv.md")
-        html_path = os.path.join(out_dir, "tailored_cv.html")
-        pdf_path = os.path.join(out_dir, "tailored_cv.pdf")
+        is_docx = base_cv_path.endswith('.docx')
         
-        # Export
-        export_markdown(cv_md, md_path)
-        export_html(md_path, html_path)
-        export_pdf(html_path, pdf_path)
-        
+        if is_docx:
+            import docx
+            from docx2pdf import convert as docx2pdf_convert
+            doc = docx.Document(base_cv_path)
+            
+            # Replace placeholders
+            for p in doc.paragraphs:
+                if '{{PROFILE}}' in p.text:
+                    p.text = p.text.replace('{{PROFILE}}', cv_data.get('profile', ''))
+                if '{{SKILLS}}' in p.text:
+                    # Skills usually have newlines, docx paragraphs don't handle newlines well directly in text replace without splitting
+                    p.text = p.text.replace('{{SKILLS}}', cv_data.get('skills', '').replace('\n', '\n'))
+            
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        for p in cell.paragraphs:
+                            if '{{PROFILE}}' in p.text:
+                                p.text = p.text.replace('{{PROFILE}}', cv_data.get('profile', ''))
+                            if '{{SKILLS}}' in p.text:
+                                p.text = p.text.replace('{{SKILLS}}', cv_data.get('skills', ''))
+                                
+            final_path = os.path.join(out_dir, "tailored_cv.docx")
+            doc.save(final_path)
+            
+            pdf_path = os.path.join(out_dir, "tailored_cv.pdf")
+            try:
+                # Requires MS Word installed on Windows
+                docx2pdf_convert(final_path, pdf_path)
+            except Exception as e:
+                print(f"Failed to convert DOCX to PDF: {e}")
+        else:
+            # Fallback to saving markdown with the replaced text
+            cv_md = base_cv_content.replace('{{PROFILE}}', cv_data.get('profile', '')).replace('{{SKILLS}}', cv_data.get('skills', ''))
+            final_path = os.path.join(out_dir, "tailored_cv.md")
+            export_markdown(cv_md, final_path)
+            html_path = os.path.join(out_dir, "tailored_cv.html")
+            pdf_path = os.path.join(out_dir, "tailored_cv.pdf")
+            export_html(final_path, html_path)
+            export_pdf(html_path, pdf_path)
+            
         # Update DB
         self.db.execute_query(
             "UPDATE jobs SET status = 'cv_generated', generated_cv_path = ? WHERE job_id = ?",
-            (md_path, job_id)
+            (final_path, job_id)
         )
         
-        # Add to knowledge manager for future reuse
-        self.km.add_generated_cv(cv_md, job_id)
+        # Add to knowledge manager for future reuse (we just save the JSON as text representation)
+        self.km.add_generated_cv(json.dumps(cv_data), job_id)
         
         return True

@@ -78,6 +78,14 @@ class KnowledgeManager:
             except Exception as e:
                 print(f"Failed to read PDF: {e}")
                 return False
+        elif path.suffix.lower() == '.docx':
+            try:
+                import docx
+                doc = docx.Document(path)
+                text = "\n".join([p.text for p in doc.paragraphs])
+            except Exception as e:
+                print(f"Failed to read DOCX: {e}")
+                return False
         else:
             with open(path, 'r', encoding='utf-8') as f:
                 text = f.read()
