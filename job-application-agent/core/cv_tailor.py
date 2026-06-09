@@ -78,7 +78,7 @@ Context:
         # Read user settings
         settings_path = "knowledge_base/settings.json"
         cv_rules = []
-        base_cv_path = "profile/base_cv.md"
+        base_cv_path = None
         
         if os.path.exists(settings_path):
             try:
@@ -94,14 +94,16 @@ Context:
                 print("DEBUG EXCEPTION in json load:", e)
                 pass
                 
-        if not os.path.exists(base_cv_path):
-            print(f"Base CV not found at {base_cv_path}")
-            # Try fallback
-            fallback = os.path.join("knowledge_base", "processed_sources", "base_cv_986a0271.md")
-            if os.path.exists(fallback):
-                base_cv_path = fallback
-            else:
-                return False
+        if not base_cv_path or not os.path.exists(base_cv_path):
+            error_msg = f"Base CV template not found at {base_cv_path}. Please select a valid template in the UI."
+            print(error_msg)
+            
+            # Update DB to reflect error status
+            self.db.execute_query(
+                "UPDATE jobs SET status = 'needs_review' WHERE job_id = ?",
+                (job_id,)
+            )
+            raise FileNotFoundError(error_msg)
                 
         if base_cv_path.endswith('.pdf'):
             import pypdf
