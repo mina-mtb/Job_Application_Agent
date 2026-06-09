@@ -380,8 +380,17 @@ with tab2:
                 with open(settings_path, "w", encoding="utf-8") as sf:
                     json.dump(settings, sf)
                     
-                # Simple conversational reply
-                reply = f"✅ Got it! I've noted down: *\"{prompt}\"*.\n\nI will make sure to follow this instruction for all your future CVs. Is there anything else about the formatting or content that I should know?"
+                # Simple conversational reply (Smart Mock)
+                template_name = settings.get("default_base_cv", "your selected template")
+                lower_prompt = prompt.lower()
+                
+                if any(word in lower_prompt for word in ["کدام فایل", "کدام تمپلت", "اسم فایل", "کدام رزومه", "چه فایلی", "چه تمپلتی", "تو الان میدانی"]):
+                    reply = f"بله حتماً! من کاملاً می‌دانم که شما فایل **`{template_name}`** را به عنوان قالب اصلی (Base CV) انتخاب کرده‌اید. 🤓\n\nمی‌توانید با خیال راحت به من بگویید در این فایل چه بخش‌هایی را تغییر دهم و چه بخش‌هایی را ثابت نگه دارم."
+                elif any(word in lower_prompt for word in ["سلام", "hello", "hi"]):
+                    reply = f"سلام! من آماده‌ام که قوانین مربوط به فایل **`{template_name}`** را یاد بگیرم. می‌خواهید کدام بخش آن را ثابت نگه دارم؟"
+                else:
+                    reply = f"✅ بسیار عالی! من قانون زیر را در حافظه‌ام برای همیشه ثبت کردم:\n\n*\"{prompt}\"*\n\nهنگام استفاده از **`{template_name}`** به عنوان قالب، دقیقاً همینطور عمل خواهم کرد. آیا دستور دیگری هم دارید؟"
+                    
                 st.session_state.ai_chat.append({"role": "assistant", "content": reply})
                 st.rerun()
         else:
