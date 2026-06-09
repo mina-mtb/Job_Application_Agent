@@ -74,30 +74,76 @@ Context:
             print(f"Job {job_id} is in status {job['status']}, not generating CV.")
             return False
 
+        # Read user settings
+        settings_path = "knowledge_base/settings.json"
+        cv_rules = []
+        base_cv_path = "profile/base_cv.md"
+        
+        if os.path.exists(settings_path):
+            try:
+                with open(settings_path, 'r', encoding='utf-8') as f:
+                    st = json.load(f)
+                    cv_rules = st.get("cv_rules", [])
+                    if st.get("default_base_cv"):
+                        base_cv_path = os.path.join("knowledge_base", "processed_sources", st["default_base_cv"])
+            except Exception:
+                pass
+                
+        if not os.path.exists(base_cv_path):
+            print(f"Base CV not found at {base_cv_path}")
+            # Try fallback
+            fallback = os.path.join("knowledge_base", "processed_sources", "base_cv_986a0271.md")
+            if os.path.exists(fallback):
+                base_cv_path = fallback
+            else:
+                return False
+                
+        with open(base_cv_path, 'r', encoding='utf-8') as f:
+            base_cv_content = f.read()
+
         # Query RAG
         query = f"Job title: {job.get('title', '')}. Description: {job.get('description', '')}"
         rag_results = self.km.query_knowledge_base(query, top_k=5)
         
-        # Generate Profile & Skills
-        generated_parts = self.generate_profile_and_skills(job, rag_results)
+        context = ""
+        for i, chunk in enumerate(rag_results):
+            context += f"[{i+1}] Source: {chunk['metadata'].get('source', 'Unknown')} - {chunk['text']}\n"
+            
+        rules_text = "\n".join([f"- {r}" for r in cv_rules]) if cv_rules else "- No special formatting rules provided."
         
-        # Static sections (Read from base_cv.md)
-        base_cv_path = self.config.get('base_cv_path', 'profile/base_cv.md')
-        static_experience = "### Senior Backend Engineer | Tech Solutions Inc.\\n- Architected and deployed microservices.\\n- Copied verbatim from source."
-        static_education = "### B.S. Computer Science\\n- University of Technology, 2016"
+        prompt = f"""
+You are an expert resume writer.
+
+### Base CV Template:
+```markdown
+{base_cv_content}
+```
+
+### Job Description:
+```
+{job.get('description', '')}
+```
+
+### Evidence from Candidate Knowledge Base:
+{context}
+
+### Strict Custom Rules from User:
+{rules_text}
+
+### INSTRUCTIONS:
+Rewrite the Base CV Template to perfectly tailor it to the Job Description. 
+You MUST STRICTLY FOLLOW the "Strict Custom Rules from User". Do not change any section, layout, or formatting that the user asked you to preserve.
+Use the Evidence provided to make the resume accurate to the candidate's actual skills.
+Do not hallucinate skills.
+
+Output ONLY the complete, final Markdown text of the new tailored CV. Do not output any thinking, JSON, or markdown codeblocks wrapping the whole file. Start directly with the CV markdown.
+"""
+        response = self.llm.generate_completion(prompt)
         
-        if os.path.exists(base_cv_path):
-            with open(base_cv_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-                
-            import re
-            exp_match = re.search(r"##\s+(?:Work )?Experience\s*(.*?)(?=\n## |\Z)", content, re.DOTALL | re.IGNORECASE)
-            if exp_match:
-                static_experience = exp_match.group(1).strip()
-                
-            edu_match = re.search(r"##\s+Education\s*(.*?)(?=\n## |\Z)", content, re.DOTALL | re.IGNORECASE)
-            if edu_match:
-                static_education = edu_match.group(1).strip()
+        import re
+        cv_md = re.sub(r'^```markdown\s*', '', response)
+        cv_md = re.sub(r'\s*```$', '', cv_md)
+        cv_md = cv_md.strip()
         
         # Evidence sources mapping
         sources_set = set()
@@ -107,16 +153,10 @@ Context:
                 sources_set.add(src)
         
         evidence_sources = list(sources_set)
-        if not evidence_sources:
-            evidence_sources = ["No direct evidence found, used generic profile."]
-            
-        cv_md = self.assemble_cv(
-            generated_parts.get('profile', ''),
-            generated_parts.get('skills', []),
-            static_experience,
-            static_education,
-            evidence_sources
-        )
+        if evidence_sources:
+            cv_md += f"\n\n## Evidence Sources\n"
+            for src in evidence_sources:
+                cv_md += f"- {src}\n"
         
         # Outputs directory structure
         today = date.today().strftime("%Y-%m-%d")
