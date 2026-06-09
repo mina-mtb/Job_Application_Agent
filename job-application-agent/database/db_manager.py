@@ -54,7 +54,7 @@ class DBManager:
             return dict(row) if row else None
 
     def get_all_jobs(self):
-        query = 'SELECT * FROM jobs'
+        query = 'SELECT * FROM jobs ORDER BY created_at DESC'
         with sqlite3.connect(self.db_path) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()

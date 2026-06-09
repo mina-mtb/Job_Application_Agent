@@ -151,9 +151,9 @@ with tab1:
                             st.session_state[f"confirm_gen_{job['job_id']}"] = False
                             
                             # Show preview right here
-                            updated_job = db.execute_query("SELECT generated_cv_path FROM jobs WHERE job_id = ?", (job['job_id'],), fetch_one=True)
-                            if updated_job and updated_job.get('generated_cv_path'):
-                                cv_path = updated_job['generated_cv_path']
+                            updated_jobs = db.execute_query("SELECT generated_cv_path FROM jobs WHERE job_id = ?", (job['job_id'],))
+                            if updated_jobs and updated_jobs[0].get('generated_cv_path'):
+                                cv_path = updated_jobs[0]['generated_cv_path']
                                 if os.path.exists(cv_path):
                                     st.markdown("### Generated CV Preview")
                                     with open(cv_path, 'r', encoding='utf-8') as f:
@@ -168,8 +168,19 @@ with tab1:
                     st.session_state[f"confirm_gen_{job['job_id']}"] = False
                     st.rerun()
 
+    status_emojis = {
+        "new": "🔵",
+        "needs_review": "🟡",
+        "cv_generated": "🟣",
+        "approved": "🟢",
+        "applied": "✅",
+        "rejected": "🔴",
+        "not_suitable": "❌"
+    }
+    
     for job in jobs:
-        with st.expander(f"{job.get('title')} at {job.get('company')} ({job.get('status')}) - Score: {job.get('suitability_score')}"):
+        emoji = status_emojis.get(job.get('status'), "⚪")
+        with st.expander(f"{emoji} {job.get('title')} at {job.get('company')} ({job.get('status')}) - Score: {job.get('suitability_score')}"):
             st.write(f"**Location:** {job.get('location')}")
             st.write(f"**Link:** [Job Post]({job.get('job_link')})")
             st.write(f"**Category:** {job.get('suitability_category')}")
@@ -190,7 +201,22 @@ with tab1:
                     if st.button("Preview Text CV", key=f"prev_{job['job_id']}"):
                         with open(job['generated_cv_path'], 'r', encoding='utf-8') as f:
                             st.markdown(f.read())
-                            
+                    if st.button("🗑️ Delete & Reset", key=f"del_cv_{job['job_id']}"):
+                        import os
+                        try:
+                            if os.path.exists(job['generated_cv_path']):
+                                os.remove(job['generated_cv_path'])
+                            pdf_path = job['generated_cv_path'].replace('.md', '.pdf')
+                            if os.path.exists(pdf_path):
+                                os.remove(pdf_path)
+                            html_path = job['generated_cv_path'].replace('.md', '.html')
+                            if os.path.exists(html_path):
+                                os.remove(html_path)
+                        except:
+                            pass
+                        db.execute_query("UPDATE jobs SET status = 'needs_review', generated_cv_path = NULL WHERE job_id = ?", (job['job_id'],))
+                        st.rerun()
+                    
                     pdf_path = job['generated_cv_path'].replace('.md', '.pdf')
                     if os.path.exists(pdf_path):
                         with open(pdf_path, "rb") as f:
@@ -201,6 +227,7 @@ with tab1:
                                 mime="application/pdf",
                                 key=f"dl_pdf_{job['job_id']}"
                             )
+                        
             with c3:
                 if can_approve(job.get('status')):
                     if st.button("Approve", key=f"appr_{job['job_id']}"):
@@ -453,6 +480,9 @@ with tab3:
                 success, msg = process_manual_entry(db, matcher, st.session_state.m_desc, st.session_state.m_link, st.session_state.m_title, st.session_state.m_company, st.session_state.m_location)
                 if success:
                     st.success(msg)
+                    import time
+                    time.sleep(1.5)
+                    st.rerun()
                 else:
                     st.error(msg)
         else:
