@@ -47,7 +47,7 @@ def test_chunking(km):
 def test_add_markdown_source(km, sample_profile_path):
     """Test adding a markdown source."""
     success = km.add_source(str(sample_profile_path))
-    assert success is True
+    assert success[0] is True
     
     # Verify file was copied
     processed_files = list(Path(km.processed_dir).glob("*.md"))
@@ -61,13 +61,13 @@ def test_duplicate_source_handling(km, sample_profile_path):
     """Test handling of duplicate sources."""
     # First add should succeed
     success1 = km.add_source(str(sample_profile_path))
-    assert success1 is True
+    assert success1[0] is True
     
     initial_count = km.collection.count()
     
     # Second add should fail and not duplicate chunks
     success2 = km.add_source(str(sample_profile_path))
-    assert success2 is False
+    assert success2[0] is False
     assert km.collection.count() == initial_count
 
 def test_retrieve_relevant_chunk(km, sample_profile_path):

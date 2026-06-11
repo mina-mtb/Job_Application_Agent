@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS jobs (
+    job_id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    company TEXT,
+    location TEXT,
+    job_link TEXT UNIQUE NOT NULL,
+    description TEXT,
+    suitability_score INTEGER,
+    suitability_category TEXT,
+    reasons_for_match TEXT,
+    weaknesses_or_risks TEXT,
+    status TEXT DEFAULT 'new',
+    date_seen DATETIME DEFAULT CURRENT_TIMESTAMP,
+    date_applied DATETIME,
+    generated_cv_path TEXT,
+    user_notes TEXT,
+    applied_cv_path TEXT,
+    cv_generation_method TEXT,
+    acceptance_score_predicted INTEGER,
+    template_used TEXT
+);

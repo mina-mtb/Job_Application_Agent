@@ -6,10 +6,10 @@ from core.knowledge_manager import KnowledgeManager
 from core.job_matcher import JobMatcher
 
 def can_generate_cv(status: str) -> bool:
-    return status in ['needs_review', 'approved']
+    return status in ['needs_review', 'approved', 'cv_pending_approval']
 
 def can_approve(status: str) -> bool:
-    return status in ['needs_review', 'cv_generated']
+    return status in ['needs_review', 'cv_generated', 'cv_pending_approval']
 
 def can_mark_applied(cv_path: str) -> bool:
     return bool(cv_path)
@@ -143,3 +143,16 @@ def handle_knowledge_upload(km: KnowledgeManager, file_path: str):
         return True, "File successfully added to Knowledge Base."
     except Exception as e:
         return False, f"Failed to add file: {str(e)}"
+
+
+def render_docx_preview(docx_path):
+    import mammoth
+    import streamlit as st
+    try:
+        with open(docx_path, 'rb') as docx_file:
+            result = mammoth.convert_to_html(docx_file)
+            html = result.value
+            st.components.v1.html(f'<div style=\"padding:10px; background-color:white; color:black; border-radius:5px; height:400px; overflow-y:auto;\">{html}</div>', height=420)
+    except Exception as e:
+        st.error(f'Could not render preview: {e}')
+

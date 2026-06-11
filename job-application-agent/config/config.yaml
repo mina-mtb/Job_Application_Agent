@@ -1,21 +1,22 @@
-active_provider: mock
+active_provider: gemini
 allow_hybrid: true
 allow_remote: true
 database:
   path: database/jobs.db
 llm:
   claude_model: claude-3-5-sonnet-20240620
-  provider: mock
+  gemini_model: gemini-2.5-flash
+  provider: gemini
 location_filtering:
   allow_hybrid: true
   allow_remote: true
   preferred_locations:
-  - "G\xC3\xB6teborg"
+  - "Göteborg"
   - Gothenburg
-  - "V\xC3\xA4stra G\xC3\xB6taland"
+  - "Västra Götaland"
   reject_relocation_required: true
 preferred_locations:
-- "G\xF6teborg"
+- "Göteborg"
 - Gothenburg
-- "V\xE4stra G\xF6taland"
+- "Västra Götaland"
 reject_relocation_required: true

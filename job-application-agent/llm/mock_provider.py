@@ -28,5 +28,10 @@ class MockProvider(BaseProvider):
                 profile = "Experienced Backend and AI Engineer."
                 skills = ["Software Engineering", "Machine Learning"]
                 
-            return json.dumps({"profile": profile, "skills": skills})
+            return json.dumps({
+                "evaluation": "Mock evaluation determining Structure A is better for clarity.",
+                "chosen_structure": "A",
+                "profile": profile, 
+                "skills": skills
+            })
         return "Mock response"

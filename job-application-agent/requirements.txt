@@ -9,3 +9,11 @@ streamlit
 markdown
 pdfkit
 docx2pdf
+xhtml2pdf
+google-genai
+pypdf
+python-docx
+PyMuPDF
+mammoth
+pandas
+pdf2docx

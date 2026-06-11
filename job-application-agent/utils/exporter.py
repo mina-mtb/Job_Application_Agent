@@ -1,4 +1,7 @@
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 def export_markdown(cv_data: str, output_path: str):
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -13,12 +16,11 @@ def export_html(markdown_path: str, html_path: str = None):
         import markdown
         with open(markdown_path, 'r', encoding='utf-8') as f:
             text = f.read()
-        html = markdown.markdown(text)
+        html = markdown.markdown(text, extensions=['tables', 'sane_lists'])
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(html)
         return True
     except ImportError:
-        # Graceful fallback if markdown package is not installed
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write("<html><body><p>HTML Export requires 'markdown' package.</p></body></html>")
         return False
@@ -28,15 +30,17 @@ def export_pdf(html_path: str, pdf_path: str = None):
         pdf_path = html_path.replace('.html', '.pdf')
         
     try:
-        from xhtml2pdf import pisa
-        with open(html_path, 'r', encoding='utf-8') as f:
-            source_html = f.read()
-            
-        with open(pdf_path, "w+b") as result_file:
-            pisa_status = pisa.CreatePDF(source_html, dest=result_file)
-            
-        return not pisa_status.err
-    except (ImportError, Exception) as e:
-        with open(pdf_path, 'w', encoding='utf-8') as f:
-            f.write(f"PDF Export Gracefully Skipped. Dependency missing or error: {e}")
+        from playwright.sync_api import sync_playwright
+        abs_html_path = os.path.abspath(html_path)
+        file_url = f"file:///{abs_html_path.replace(os.sep, '/')}"
+        
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(file_url, wait_until="networkidle")
+            page.pdf(path=pdf_path, format="A4", print_background=True, margin={"top": "0cm", "right": "0cm", "bottom": "0cm", "left": "0cm"})
+            browser.close()
+        return True
+    except Exception as e:
+        logger.error(f"Playwright PDF generation failed: {e}")
         return False
